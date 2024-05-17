@@ -1,0 +1,7 @@
+{
+  "name": "LittleWondersApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
