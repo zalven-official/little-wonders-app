@@ -1,5 +1,5 @@
 <template>
-  <MainLayout class="min-h-full overflow-auto" data-theme="dark">
+  <MainLayout>
     <NavigationBar /> <strong>Ready to create an app?</strong>
     <p>Start with Ionic <a target="_blank" rel="noopener noreferrer"
         href="https://ionicframework.com/docs/components">UI Components</a></p>

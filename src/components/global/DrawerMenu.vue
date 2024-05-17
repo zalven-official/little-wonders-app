@@ -1,26 +1,58 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-const drawerId = ref('drawer-menu')
-
-export function toggleDrawer() {
-  const checkbox = document.getElementById(drawerId.value) as HTMLIonCheckboxElement;
-  checkbox.checked = !checkbox.checked;
-}
-
-</script>
-
 <template>
   <div class="drawer">
-    <input id="drawer-menu" type="checkbox" class="drawer-toggle" />
+    <input :id="drawerStore.drawerMenuId" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
-      <label @click="toggleDrawer" class="btn btn-primary drawer-button">Open drawer</label>
+      <slot></slot>
     </div>
     <div class="drawer-side">
-      <label for="drawer-menu" aria-label="close sidebar" class="drawer-overlay"></label>
-      <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-        <li><a>Sidebar Item 1</a></li>
-        <li><a>Sidebar Item 2</a></li>
+      <label :for="drawerStore.drawerMenuId" aria-label="close sidebar" class="drawer-overlay"></label>
+      <ul class="menu p-0 min-h-full bg-base-200 text-base-content">
+        <div class="relative bg-black mb-5 ">
+          <img :src="coverImage" class=" bg-black min-w-80 w-full object-cover h-32 opacity-50" />
+          <img :src="coverTextImage" class="absolute w-44 object-cover top-0  " />
+        </div>
+        <li class="p-2" v-for="(item, index) in drawerMenuItems" :key="index" @click="createBionicTemplate(item.route)">
+          <a class="p-3">
+            <component :is="item.icon" class="w-5 h-5 mr-4 text-primary" />
+            <span class="text-md">{{ item.title }}</span>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import coverImage from '@/assets/cover.png'
+import coverTextImage from '@/assets/cover-text.png'
+
+import { useIonRouter } from '@ionic/vue';
+import { useDrawerStore } from '@/store/ui/drawer.store'
+import { Paintbrush2Icon } from 'lucide-vue-next';
+import { type Component } from 'vue';
+
+const drawerStore = useDrawerStore()
+const ionRouter = useIonRouter();
+
+
+export interface DraweMenuItem {
+  title: string
+  icon: Component,
+  route: string
+}
+
+
+const drawerMenuItems: DraweMenuItem[] = [
+  {
+    title: 'Theme',
+    icon: Paintbrush2Icon,
+    route: '/theme'
+  },
+]
+
+function createBionicTemplate(route: string) {
+  ionRouter.navigate(route, 'forward', 'replace');
+}
+
+
+</script>
