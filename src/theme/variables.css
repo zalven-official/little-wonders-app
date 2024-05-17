@@ -1,2 +1,13 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Sriracha";
+  src: url("./fonts/Sriracha-Regular.ttf") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
