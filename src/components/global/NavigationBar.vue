@@ -1,7 +1,8 @@
 <template>
   <div>
     <DrawerMenu>
-      <div class="navbar bg-base-200 shadow">
+      <div
+        :class="`navbar bg-base-200 shadow bg-opacity-${themeStore.backgroundOpacity} backdrop-blur-${themeStore.backgroundBlur.value} shadow-xl`">
         <div class="flex-none">
           <button class="btn btn-square btn-ghost" @click="drawerStore.toggleDrawer">
             <MenuIcon />
@@ -19,8 +20,9 @@
 <script lang="ts" setup>
 import { MenuIcon } from 'lucide-vue-next';
 import DrawerMenu from './DrawerMenu.vue'
+import { useThemeStore } from '@/store/ui';
+import { useDrawerStore } from '@/store/ui'
 
-import { useDrawerStore } from '@/store/ui/drawer.store'
 const drawerStore = useDrawerStore()
-
+const themeStore = useThemeStore()
 </script>

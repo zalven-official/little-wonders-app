@@ -7,48 +7,62 @@
           <img :src="data.image"
             :class="`h-48 w-72 object-cover rounded-box blur-${themeStore.sizeConverter(data.imageBlur).value} opacity-${themeStore.percentageConverter(data.imageOpacity)} ${data.value === theme.value ? 'p-2' : ''}`" />
           <div
-            :class="`absolute m-2 text-xs bottom-0 right-0 bg-base-100 p-2 rounded font-thin bg-opacity-${backgroundOpacity}`">
+            :class="`absolute m-2 text-xs bottom-0 right-0 bg-base-100 p-2 rounded font-thin bg-opacity-${themeStore.percentageConverter(data.backgrounOpacity)}`">
             {{ data.label }}
           </div>
           <div
             :class="`absolute flex  bottom-0 left-0 m-2 bg-base-100 p-2 rounded shadow backdrop-blur-${themeStore.sizeConverter(data.backgroundBlur).value} bg-opacity-${themeStore.percentageConverter(data.backgrounOpacity)} `">
-            <div class="w-2 h-5 bg-primary mx-1 rounded"></div>
-            <div class="w-2 h-5 bg-secondary mx-1 rounded"></div>
-            <div class="w-2 h-5 bg-accent mx-1 rounded"></div>
+            <div class="w-2 h-5 bg-primary mx-1 rounded shadow"></div>
+            <div class="w-2 h-5 bg-secondary mx-1 rounded shadow"></div>
+            <div class="w-2 h-5 bg-accent mx-1 rounded shadow"></div>
+            <div class="w-2 h-5 bg-neutral mx-1 rounded shadow"></div>
+            <div class="w-2 h-5 bg-base-300 mx-1 rounded shadow"></div>
+            <div class="w-2 h-5 bg-base-200 mx-1 rounded shadow"></div>
           </div>
         </div>
       </div>
       <div
         :class="`card w-4/5 bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl`">
         <div class="card-body">
-          <!-- Background Opacity -->
-          <p class="text-xs">Change Opacity {{ backgroundOpacity }}%</p>
+          <div class="flex items-center justify-between w-full text-sm">
+            <p class="text-xs opacity-80">Background Opacity</p>
+            <p class="text-right text-primary text-xs">{{ backgroundOpacity }}%</p>
+          </div>
           <input type="range" step="0.05" min="0" max="1" :value="theme.backgrounOpacity" class="range range-sm"
             @change="handleBackgroundOpactiyChange" />
 
           <div class="my-3" />
 
           <!-- Background Blur -->
-          <p class="text-xs">Change Blur {{ backgroundBlur.label }}</p>
+          <div class="flex items-center justify-between w-full text-sm">
+            <p class="text-xs opacity-80">Change Blur:</p>
+            <p class="text-right text-primary text-xs">{{ backgroundBlur.label }}</p>
+          </div>
           <input type="range" step="1" min="0" max="6" :value="theme.backgroundBlur" class="range range-sm"
             @change="handleBackgroundBlurChange" />
 
           <div class="my-3" />
 
           <!-- Image Opacity -->
-          <p class="text-xs">Background image Opacity {{ imageOpacity }}%</p>
+          <div class="flex items-center justify-between w-full text-sm">
+            <p class="text-xs opacity-80">Background image Opacity:</p>
+            <p class="text-right text-primary text-xs">{{ imageOpacity }}%</p>
+          </div>
           <input type="range" step="0.05" min="0" max="1" :value="theme.imageOpacity" class="range range-sm"
             @change="handleImageOpactiyChange" />
 
           <div class="my-3" />
 
           <!-- Image Blur -->
-          <p class="text-xs">Background image Blur - {{ imageBlur.label }}</p>
+          <div class="flex items-center justify-between w-full text-sm">
+            <p class="text-xs opacity-80">Background image Blur:</p>
+            <p class="text-right text-primary text-xs">{{ imageBlur.label }}</p>
+          </div>
+
           <input type="range" step="1" min="0" max="6" :value="theme.imageBlur" class="range range-sm"
             @change="handleImageBlurChange" />
 
           <div class="my-3" />
-
 
           <div class="card-actions justify-end">
             <button class="btn btn-sm btn-primary" @click="themeStore.setDefaultThemeSettings">
@@ -97,6 +111,5 @@ function handleImageBlurChange(event: Event) {
   const inputElement = event.target as HTMLInputElement;
   theme.value.imageBlur = parseFloat(inputElement.value)
 }
-
 
 </script>

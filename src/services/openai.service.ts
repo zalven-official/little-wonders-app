@@ -11,21 +11,21 @@ export class OpenAIClient {
   private static instance: OpenAIClient
 
   private client: OpenAI
-  private apiKey: string
+  private token: string
 
   // Available models: "gpt-4-1106-preview", "gpt-3.5-turbo-1106", or "davinci-codex"
   private readonly CHAT_MODEL_NAME: string = 'gpt-3.5-turbo-0125'
   private readonly VISUAL_MODEL_NAME: string = 'gpt-4o'
   private readonly IMAGE_GENERATION_MODEL_NAME: string = 'dall-e-3'
 
-  private constructor(apiKey: string) {
-    this.client = new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true })
-    this.apiKey = encodeString(apiKey)
+  private constructor(token: string) {
+    this.token = encodeString(token)
+    this.client = new OpenAI({ apiKey: decodeString(this.token), dangerouslyAllowBrowser: true })
   }
 
-  public static getInstance(apiKey: string): OpenAIClient {
+  public static getInstance(token: string): OpenAIClient {
     if (!OpenAIClient.instance) {
-      OpenAIClient.instance = new OpenAIClient(apiKey)
+      OpenAIClient.instance = new OpenAIClient(token)
     }
     return OpenAIClient.instance
   }
@@ -61,7 +61,7 @@ export class OpenAIClient {
   ) {
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${decodeString(this.apiKey)}`
+      Authorization: `Bearer ${decodeString(this.token)}`
     }
     const payload = {
       "model": `${visualModelName}`,
