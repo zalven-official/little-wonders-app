@@ -11,9 +11,10 @@
           <img :src="coverImage" class=" bg-black min-w-80 w-full object-cover h-32 opacity-50" />
           <img :src="coverTextImage" class="absolute w-44 object-cover top-0  " />
         </div>
-        <li class="p-2" v-for="(item, index) in drawerMenuItems" :key="index" @click="createBionicTemplate(item.route)">
-          <a class="p-3">
-            <component :is="item.icon" class="w-5 h-5 mr-4 text-primary" />
+        <li class="px-2 py-1" v-for="(item, index) in drawerMenuItems" :key="index"
+          @click="createBionicTemplate(item.route)">
+          <a class="p-5" :class="{ 'active': item.name === route.name }">
+            <component :is="item.icon" class="w-5 h-5 mr-2 text-primary" />
             <span class="text-md">{{ item.title }}</span>
           </a>
         </li>
@@ -27,18 +28,21 @@ import coverImage from '@/assets/cover.png'
 import coverTextImage from '@/assets/cover-text.png'
 
 import { useIonRouter } from '@ionic/vue';
+import { useRoute } from 'vue-router';
 import { useDrawerStore } from '@/store/ui/drawer.store'
 import { Paintbrush2Icon, HomeIcon } from 'lucide-vue-next';
 import { type Component } from 'vue';
 
 const drawerStore = useDrawerStore()
 const ionRouter = useIonRouter();
+const route = useRoute();
 
 
 export interface DraweMenuItem {
   title: string
   icon: Component,
   route: string
+  name: string
 }
 
 
@@ -46,18 +50,22 @@ const drawerMenuItems: DraweMenuItem[] = [
   {
     title: 'Home',
     icon: HomeIcon,
-    route: '/'
+    route: '/',
+    name: 'home'
   },
   {
     title: 'Theme',
     icon: Paintbrush2Icon,
-    route: '/theme'
+    route: '/theme',
+    name: 'theme'
   },
 ]
 
 function createBionicTemplate(route: string) {
   ionRouter.navigate(route, 'forward', 'replace');
 }
+
+
 
 
 </script>

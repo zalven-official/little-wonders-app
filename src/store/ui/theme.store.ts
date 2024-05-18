@@ -1,18 +1,35 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
+import BusinessBackground from '@/assets/business-bg.png'
+import BusinessCover from '@/assets/business-cv.png'
+
+import DarkBackground from '@/assets/dark-bg.png'
+import DarkCover from '@/assets/dark-cv.png'
+
 import EmeraldBackground from '@/assets/emerald-bg.png'
 import EmeraldCover from '@/assets/emerald-cv.png'
+
 import ForestBackground from '@/assets/forest-bg.png'
 import ForestCover from '@/assets/forest-cv.png'
+
+import GoldBackground from '@/assets/gold-bg.png'
+import GoldCover from '@/assets/gold-cv.png'
+
+import LightBackground from '@/assets/light-bg.png'
+import LightCover from '@/assets/light-cv.png'
+
 import NightBackground from '@/assets/night-bg.png'
 import NightCover from '@/assets/night-cv.png'
-import PastelCover from '@/assets/pastel-cv.png'
+
 import PastelBackground from '@/assets/pastel-bg.png'
-import ValentineCover from '@/assets/valentine-cv.png'
+import PastelCover from '@/assets/pastel-cv.png'
+
 import ValentineBackground from '@/assets/valentine-bg.png'
-import WinterCover from '@/assets/winter-cv.png'
+import ValentineCover from '@/assets/valentine-cv.png'
+
 import WinterBackground from '@/assets/winter-bg.png'
+import WinterCover from '@/assets/winter-cv.png'
 
 interface Theme {
   label: string
@@ -45,7 +62,7 @@ export const useThemeStore = defineStore('theme', () => {
 
   const themes = ref<Theme[]>([
     {
-      label: 'Emerald',
+      label: 'Emerald Landscape',
       value: 'emerald',
       image: EmeraldCover,
       background: EmeraldBackground,
@@ -55,7 +72,47 @@ export const useThemeStore = defineStore('theme', () => {
       imageBlur: 0,
     },
     {
-      label: 'Pastel',
+      label: 'School Facility',
+      value: 'light',
+      image: LightCover,
+      background: LightBackground,
+      backgrounOpacity: 1,
+      backgroundBlur: 0,
+      imageOpacity: 1,
+      imageBlur: 0,
+    },
+    {
+      label: 'Noir Luna',
+      value: 'luxury',
+      image: GoldCover,
+      background: GoldBackground,
+      backgrounOpacity: 1,
+      backgroundBlur: 0,
+      imageOpacity: 1,
+      imageBlur: 0,
+    },
+    {
+      label: 'Dark Space',
+      value: 'dark',
+      image: DarkCover,
+      background: DarkBackground,
+      backgrounOpacity: 1,
+      backgroundBlur: 0,
+      imageOpacity: 1,
+      imageBlur: 0,
+    },
+    {
+      label: 'Home Office',
+      value: 'business',
+      image: BusinessCover,
+      background: BusinessBackground,
+      backgrounOpacity: 1,
+      backgroundBlur: 0,
+      imageOpacity: 1,
+      imageBlur: 0,
+    },
+    {
+      label: 'Pastel World',
       value: 'pastel',
       image: PastelCover,
       background: PastelBackground,
@@ -65,7 +122,7 @@ export const useThemeStore = defineStore('theme', () => {
       imageBlur: 0,
     },
     {
-      label: 'Night',
+      label: 'Night Sky',
       value: 'night',
       image: NightCover,
       background: NightBackground,
@@ -75,7 +132,7 @@ export const useThemeStore = defineStore('theme', () => {
       imageBlur: 0,
     },
     {
-      label: 'Forest',
+      label: 'Nocturnal Woods',
       value: 'forest',
       image: ForestCover,
       background: ForestBackground,
@@ -85,7 +142,7 @@ export const useThemeStore = defineStore('theme', () => {
       imageBlur: 0,
     },
     {
-      label: 'Winter',
+      label: 'Morning Winter',
       value: 'winter',
       image: WinterCover,
       background: WinterBackground,
@@ -95,7 +152,7 @@ export const useThemeStore = defineStore('theme', () => {
       imageBlur: 0,
     },
     {
-      label: 'Valentine',
+      label: 'Valentines Day',
       value: 'valentine',
       image: ValentineCover,
       background: ValentineBackground,
