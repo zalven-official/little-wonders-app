@@ -1,8 +1,5 @@
 <template>
   <MainLayout>
-    <NavigationBar /> <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer"
-        href="https://ionicframework.com/docs/components">UI Components</a></p>
     <button class="btn btn-active">Default</button>
     <button class="btn btn-active btn-neutral">Neutral</button>
     <button class="btn btn-active btn-primary">Primary</button>

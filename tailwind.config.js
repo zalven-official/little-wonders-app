@@ -14,6 +14,15 @@ export default {
   plugins: [
     require('daisyui'),
   ],
+  safelist: [
+    { pattern: /bg-opacity-(\d{1,2}|100)/ },
+    { pattern: /opacity-(\d{1,2}|100)/ },
+    { pattern: /blur-(none|sm|md|lg|xl|2xl|3xl|\d{1,2}|100)/ },
+    { pattern: /backdrop-blur-(none|sm|md|lg|xl|2xl|3xl|\d{1,2}|100)/ },
+    { pattern: /bg-./ },
+    { pattern: /text-./ },
+    { pattern: /border-./ },
+  ],
   daisyui: {
     themes: [
       "light",
