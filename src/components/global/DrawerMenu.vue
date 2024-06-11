@@ -30,7 +30,7 @@ import coverTextImage from '@/assets/cover-text.png'
 import { useIonRouter } from '@ionic/vue';
 import { useRoute } from 'vue-router';
 import { useDrawerStore } from '@/store/ui/drawer.store'
-import { Paintbrush2Icon, HomeIcon } from 'lucide-vue-next';
+import { Paintbrush2Icon, HomeIcon, PlusIcon } from 'lucide-vue-next';
 import { type Component } from 'vue';
 
 const drawerStore = useDrawerStore()
@@ -54,6 +54,12 @@ const drawerMenuItems: DraweMenuItem[] = [
     name: 'home'
   },
   {
+    title: "Create Story",
+    icon: PlusIcon,
+    route: '/story-generated',
+    name: 'story-generated',
+  },
+  {
     title: 'Theme',
     icon: Paintbrush2Icon,
     route: '/theme',
@@ -64,8 +70,5 @@ const drawerMenuItems: DraweMenuItem[] = [
 function createBionicTemplate(route: string) {
   ionRouter.navigate(route, 'forward', 'replace');
 }
-
-
-
 
 </script>

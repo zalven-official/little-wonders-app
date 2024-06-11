@@ -1,5 +1,8 @@
 <template>
   <MainLayout>
+    <button class="btn btn-primary m-5 shadow btn-sm" @click="navigateToStoryGenerator">
+      <PlusIcon class="w-5" /> Add Story
+    </button>
     <div class="flex flex-col p-5 items-center justify-center">
       <div class="mb-10">
         <div class="join w-full">
@@ -58,7 +61,10 @@ import { useThemeStore } from '@/store/ui/theme.store'
 import { storeToRefs } from 'pinia';
 import { readableTime } from '@/lib'
 import { onMounted } from 'vue';
+import { PlusIcon } from 'lucide-vue-next';
+import { useIonRouter } from '@ionic/vue';
 
+const ionRouter = useIonRouter();
 const storyStore = useStoryStore()
 const themeStore = useThemeStore()
 const { stories } = storeToRefs(storyStore)
@@ -70,5 +76,10 @@ const {
 onMounted(() => {
   storyStore.search()
 })
+
+function navigateToStoryGenerator() {
+  ionRouter.navigate('/story-generated', 'forward', 'replace');
+}
+
 
 </script>
