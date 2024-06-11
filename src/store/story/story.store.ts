@@ -2,41 +2,7 @@
 import { defineStore } from 'pinia'
 import SampleStories from '@/data/sample.stories.json'
 import { ref } from 'vue'
-
-export enum Level {
-  GRADE_1 = 'grade 1',
-  GRADE_2 = 'grade 2',
-  GRADE_3 = 'grade 3',
-  GRADE_4 = 'grade 4',
-  GRADE_5 = 'grade 5',
-  GRADE_6 = 'grade 6',
-}
-
-enum TestType {
-  PRETEST = "Pre Test",
-  POSTTEST = "Post Test"
-}
-
-interface Question {
-  description: string
-  options?: string[]
-  answer: string,
-}
-
-
-export interface Story {
-  title: string
-  subtitle: string
-  story: string
-  poster: string
-
-  questions: Question[]
-  numberOfQuestions: number
-
-  testType: TestType
-  level: Level
-  published: Date
-}
+import type { Story, Level, TestType } from './story.generator'
 
 export const useStoryStore = defineStore('story', () => {
   // import.meta.env.VITE_OPEN_AI_KEY
@@ -53,14 +19,13 @@ export const useStoryStore = defineStore('story', () => {
   //   generateHots
   // }\
 
-
   const stories = ref(
     {
       stories: SampleStories as unknown as Story[],
       filters: {
-        level: 'All' as Level | 'All',
-        testType: 'All' as TestType | 'All',
-        date: 'All' as 'Newest' | 'Oldest' | 'All',
+        level: 'Grade Level' as Level | 'Grade Level',
+        testType: 'Test Type' as TestType | 'Test Type',
+        date: 'Date' as 'Newest' | 'Oldest' | 'Date',
         search: '',
       },
     }
@@ -71,12 +36,12 @@ export const useStoryStore = defineStore('story', () => {
     let filtered = stories.value.stories;
 
     // Filter by level
-    if (stories.value.filters.level !== 'All' && stories.value.filters.level) {
+    if (!stories.value.filters.level.includes('Grade Level') && stories.value.filters.level) {
       filtered = filtered.filter(story => story.level.trim().toLowerCase() === stories.value.filters.level.trim().toLowerCase());
     }
 
     // Filter by test type
-    if (stories.value.filters.testType !== 'All' && stories.value.filters.testType) {
+    if (!stories.value.filters.testType.includes('Test Type') && stories.value.filters.testType) {
       filtered = filtered.filter(story => story.testType.trim().toLowerCase() === stories.value.filters.testType.trim().toLowerCase());
     }
 
