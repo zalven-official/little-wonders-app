@@ -1,0 +1,50 @@
+[
+  {
+    "title": "The Adventure of Tom Sawyer",
+    "subtitle": "An excerpt from Mark Twain's classic novel",
+    "story": "Tom Sawyer is a young boy growing up along the Mississippi River in the mid-19th century. He's mischievous and adventurous, always getting into trouble with his friends. One day, Tom and his friend Huck Finn decide to explore a spooky old house...",
+    "poster": "https://cdn.dribbble.com/userupload/9328318/file/original-372a31363e584305d2763f4f50becddd.jpg?resize=752x",
+    "questions": [
+      {
+        "description": "What is the name of the river where Tom Sawyer lives?",
+        "answer": "Mississippi River"
+      },
+      {
+        "description": "Who is Tom's adventurous friend?",
+        "answer": "Huck Finn"
+      },
+      {
+        "description": "What do Tom and Huck decide to explore?",
+        "answer": "Spooky old house"
+      }
+    ],
+    "numberOfQuestions": 3,
+    "testType": "Post Test",
+    "level": "grade 5",
+    "published": "2023-05-20T00:00:00.000Z"
+  },
+  {
+    "title": "The Secret Garden",
+    "subtitle": "An excerpt from Frances Hodgson Burnett's beloved tale",
+    "story": "Mary Lennox is a spoiled and sickly girl who is sent to live with her uncle in England after her parents die. At her uncle's estate, Mary discovers a hidden garden that has been locked up for years. With the help of her new friend Dickon, Mary works to bring the garden back to life...",
+     "poster": "https://static.vecteezy.com/system/resources/previews/003/349/134/non_2x/cute-workout-cat-cartoon-free-vector.jpg",
+    "questions": [
+      {
+        "description": "Where is Mary sent to live after her parents die?",
+        "answer": "England"
+      },
+      {
+        "description": "What is the name of the hidden garden?",
+        "answer": "The Secret Garden"
+      },
+      {
+        "description": "Who helps Mary bring the garden back to life?",
+        "answer": "Dickon"
+      }
+    ],
+    "numberOfQuestions": 3,
+    "testType": "Pre Test",
+    "level": "grade 4",
+    "published": "2023-08-12T00:00:00.000Z"
+  }
+]

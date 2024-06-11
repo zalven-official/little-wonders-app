@@ -28,9 +28,9 @@ export function generateFallbackName(fullName: string): string {
  * @param {Date} date The Date object representing the timestamp to convert.
  * @returns {string} A human-readable relative time string (e.g., "just now", "5 minutes ago", "yesterday", etc.).
  */
-export function readableTime(date: Date): string {
+export function readableTime(date: Date | string): string {
   const now = new Date();
-  const diff = now.getTime() - date.getTime();
+  const diff = now.getTime() - new Date(date).getTime();
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -57,7 +57,7 @@ export function readableTime(date: Date): string {
       month: "short",
       day: "numeric",
     };
-    return date.toLocaleDateString(undefined, options);
+    return new Date(date).toLocaleDateString(undefined, options);
   }
 }
 

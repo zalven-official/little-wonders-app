@@ -3,6 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 import HomePage from '@/views/HomePage.vue'
 import ThemePage from '@/views/ThemePage.vue'
 
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
