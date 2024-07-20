@@ -36,6 +36,7 @@
         <select v-model="story.testType" class="select select-bordered w-full ">
           <option :value="TestType.PRETEST">Pre Test</option>
           <option :value="TestType.POSTTEST">Post Test</option>
+          <option :value="TestType.STORY">Story</option>
         </select>
       </label>
 

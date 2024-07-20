@@ -9,7 +9,13 @@ export enum Level {
 
 export enum TestType {
   PRETEST = "Pre Test",
-  POSTTEST = "Post Test"
+  POSTTEST = "Post Test",
+  STORY = "Story"
+}
+
+export enum ReadingMode {
+  ORAL = "Oral Reading",
+  SILENT = "Silent Reading"
 }
 
 interface Question {
@@ -30,6 +36,7 @@ export interface Story {
   showAnswer: boolean
 
   testType: TestType
+  readingMode: ReadingMode
   level: Level
   published: Date
 }
@@ -75,6 +82,7 @@ export const useStoryGeneratorStore = defineStore('story-generator', () => {
     ],
     numberOfQuestions: 0,
     testType: TestType.PRETEST,
+    readingMode: ReadingMode.ORAL,
     level: Level.GRADE_4,
     published: new Date()
   })

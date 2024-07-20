@@ -7,7 +7,7 @@
       <div class="mb-10">
         <div class="join w-full">
           <select v-model="stories.filters.level" class="select join-item w-full select-sm rounded-b-none">
-            <option disabled selected>Grade Level</option>
+            <option disabled selected>Grade</option>
             <option>Level</option>
             <option>Grade 4</option>
             <option>Grade 5</option>
@@ -15,9 +15,16 @@
           </select>
           <select v-model="stories.filters.testType" class="select join-item  w-full select-sm rounded-b-none">
             <option disabled selected>Type</option>
-            <option>Test Type</option>
+            <option>Type</option>
             <option>Post Test</option>
             <option>Pre Test</option>
+            <option>Story</option>
+          </select>
+          <select v-model="stories.filters.readingMode" class="select join-item  w-full select-sm rounded-b-none">
+            <option disabled selected>Mode</option>
+            <option>Mode</option>
+            <option>Silent Reading</option>
+            <option>Oral Reading</option>
           </select>
           <select v-model="stories.filters.date" class="select join-item w-full select-sm rounded-br-none">
             <option disabled selected>Date</option>
@@ -39,10 +46,9 @@
         <div class="p-3">
           <p class="text-sm font-semibold">{{ value.title }}</p>
           <p class="text-xs mt-2">{{ value.subtitle }}</p>
-          <p class="text-xs mt-2 space-y-2">
-            <span class="capitalize bg-primary text-base-100 w-full rounded p-1 mr-2">{{ value.level }}</span>
-            <span class="capitalize bg-secondary w-full rounded p-1  mr-2">{{ value.testType }}</span>
-          </p>
+          <div class="capitalize badge badge-primary m-1 badge-xs p-2">{{ value.level }}</div>
+          <div class="capitalize badge badge-secondary m-1 badge-xs p-2">{{ value.testType }}</div>
+          <div class="capitalize badge badge-accent m-1 badge-xs p-2">{{ value.readingMode }}</div>
           <p class="text-xs mt-2 opacity-65">{{ readableTime(value.published) }}</p>
         </div>
       </div>

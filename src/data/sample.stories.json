@@ -20,6 +20,7 @@
     ],
     "numberOfQuestions": 3,
     "testType": "Post Test",
+    "readingMode": "Silent Reading",
     "level": "grade 5",
     "published": "2023-05-20T00:00:00.000Z"
   },
@@ -45,6 +46,32 @@
     "numberOfQuestions": 3,
     "testType": "Pre Test",
     "level": "grade 4",
+    "readingMode": "Oral Reading",
+    "published": "2023-08-12T00:00:00.000Z"
+  },
+   {
+    "title": "The Secret Garden",
+    "subtitle": "An excerpt from Frances Hodgson Burnett's beloved tale",
+    "story": "Mary Lennox is a spoiled and sickly girl who is sent to live with her uncle in England after her parents die. At her uncle's estate, Mary discovers a hidden garden that has been locked up for years. With the help of her new friend Dickon, Mary works to bring the garden back to life...",
+     "poster": "https://static.vecteezy.com/system/resources/previews/003/349/136/non_2x/cute-pull-up-cat-cartoon-free-vector.jpg",
+    "questions": [
+      {
+        "description": "Where is Mary sent to live after her parents die?",
+        "answer": "England"
+      },
+      {
+        "description": "What is the name of the hidden garden?",
+        "answer": "The Secret Garden"
+      },
+      {
+        "description": "Who helps Mary bring the garden back to life?",
+        "answer": "Dickon"
+      }
+    ],
+    "numberOfQuestions": 3,
+    "testType": "Story",
+    "level": "grade 4",
+    "readingMode": "Oral Reading",
     "published": "2023-08-12T00:00:00.000Z"
   }
 ]

@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import SampleStories from '@/data/sample.stories.json'
 import { ref } from 'vue'
-import type { Story, Level, TestType } from './story.generator'
+import type { Story, Level, TestType, ReadingMode } from './story.generator'
 
 export const useStoryStore = defineStore('story', () => {
   // import.meta.env.VITE_OPEN_AI_KEY
@@ -23,8 +23,9 @@ export const useStoryStore = defineStore('story', () => {
     {
       stories: SampleStories as unknown as Story[],
       filters: {
-        level: 'Grade Level' as Level | 'Grade Level',
-        testType: 'Test Type' as TestType | 'Test Type',
+        level: 'Grade' as Level | 'Grade',
+        testType: 'Type' as TestType | 'Type',
+        readingMode: 'Mode' as ReadingMode | 'Mode',
         date: 'Date' as 'Newest' | 'Oldest' | 'Date',
         search: '',
       },
@@ -36,13 +37,18 @@ export const useStoryStore = defineStore('story', () => {
     let filtered = stories.value.stories;
 
     // Filter by level
-    if (!stories.value.filters.level.includes('Grade Level') && stories.value.filters.level) {
+    if (!stories.value.filters.level.includes('Grade') && stories.value.filters.level) {
       filtered = filtered.filter(story => story.level.trim().toLowerCase() === stories.value.filters.level.trim().toLowerCase());
     }
 
     // Filter by test type
-    if (!stories.value.filters.testType.includes('Test Type') && stories.value.filters.testType) {
+    if (!stories.value.filters.testType.includes('Type') && stories.value.filters.testType) {
       filtered = filtered.filter(story => story.testType.trim().toLowerCase() === stories.value.filters.testType.trim().toLowerCase());
+    }
+
+    // Filter by reading mode
+    if (!stories.value.filters.readingMode.includes('Mode') && stories.value.filters.readingMode) {
+      filtered = filtered.filter(story => story.readingMode.trim().toLowerCase() === stories.value.filters.readingMode.trim().toLowerCase());
     }
 
     // Sort by date
