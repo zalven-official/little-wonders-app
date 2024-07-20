@@ -16,7 +16,7 @@ export class OpenAIClient {
   // Available models: "gpt-4-1106-preview", "gpt-3.5-turbo-1106", or "davinci-codex"
   private readonly CHAT_MODEL_NAME: string = 'gpt-3.5-turbo-0125'
   private readonly VISUAL_MODEL_NAME: string = 'gpt-4o'
-  private readonly IMAGE_GENERATION_MODEL_NAME: string = 'dall-e-3'
+  private readonly IMAGE_GENERATION_MODEL_NAME: string = 'dall-e-2'
 
   private constructor(token: string) {
     this.token = encodeString(token)
