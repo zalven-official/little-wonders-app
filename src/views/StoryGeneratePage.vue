@@ -38,7 +38,6 @@
           <option :value="TestType.STORY">Story</option>
         </select>
       </label>
-
       <label class="form-control w-full my-2">
         <div class="label">
           <span class="label-text">Story Title</span>
@@ -46,7 +45,6 @@
         <input v-model="story.title" type="text" placeholder="Type your story title..."
           class="input input-bordered w-full" />
       </label>
-
       <label class="form-control w-full my-2">
         <div class="label">
           <span class="label-text">Story Description</span>
@@ -54,34 +52,29 @@
         <textarea class="textarea textarea-bordered" v-model="story.description"
           placeholder="Once upon a time in a land far, far away..." />
       </label>
-
-
       <button class="btn btn-primary my-4" type="button" @click="generateStory">
         <SparklesIcon class="w-5" />
         Generate Story
       </button>
-
-
     </form>
     <div v-if="result"
       :class="` card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 p-5 overflow-y-auto`">
+
       <div ref="generatedResult">
         {{ result }}
       </div>
 
-      <button class="btn btn-outline btn-primary my-2" type="button" @click="generateStory">
-        <SparklesIcon class="w-5" />
+      <button class="btn btn-outline btn-primary my-2" type="button" @click="exportStory">
+        <DownloadIcon class="w-5" />
         Save as Docx
       </button>
 
-      <button class="btn btn-primary my-2" type="button" @click="generateStory">
-        <SparklesIcon class="w-5" />
+      <button class="btn btn-primary my-2" type="button" @click="saveStory">
+        <SaveIcon class="w-5" />
         Story
       </button>
 
     </div>
-
-
   </MainLayout>
 </template>
 
@@ -89,8 +82,8 @@
 import MainLayout from '@/components/layouts/MainLayout.vue';
 import { useThemeStore } from '@/store/ui/theme.store'
 import { Level, TestType, IOralStory } from '@/services/types';
-
-// import { SparklesIcon, TrashIcon } from 'lucide-vue-next';
+import { toast } from 'vue3-toastify';
+import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useStoryGeneratorStore } from '@/store/story/story.generator';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
@@ -106,20 +99,45 @@ const {
 const { story } = storeToRefs(storyGenerator)
 const result = ref<IOralStory>()
 const isLoading = ref(false)
-const generatedResult = ref()
+const generatedResult = ref<HTMLElement>()
 
 async function generateStory(): Promise<void> {
   isLoading.value = true
   try {
     result.value = await storyGenerator.generateOralStory()
-    console.log(result.value)
-    console.log(generatedResult.value)
+    toast.success("Successfully generating the story")
   } catch (e) {
-    console.log(e)
+    toast.error("Something Wrong Generating the Story")
   } finally {
     isLoading.value = false
   }
 }
+
+async function exportStory(): Promise<void> {
+  isLoading.value = true
+  try {
+    if (generatedResult.value) {
+      await storyGenerator.exportStory(generatedResult.value)
+      toast.success("Successfully exporting the story")
+    }
+  } catch (e) {
+    toast.error("Something Wrong Exporting the Story")
+  } finally {
+    isLoading.value = false
+  }
+}
+async function saveStory(): Promise<void> {
+  isLoading.value = true
+  try {
+    await storyGenerator.saveStory()
+    toast.success("Successfully saving the story")
+  } catch (e) {
+    toast.error("Something Wrong Saving the Story")
+  } finally {
+    isLoading.value = false
+  }
+}
+
 // const questionSize = ref(5)
 
 </script>

@@ -4,6 +4,14 @@ import OralStory from '@/services/oral_story.service'
 import { Level, TestType, IOralStory } from '@/services/types';
 import { ref } from 'vue';
 
+
+import { asBlob } from 'html-docx-js-typescript'
+import { File } from "@ionic-native/file";
+import { FileOpener } from "@ionic-native/file-opener";
+
+
+
+
 export const useStoryGeneratorStore = defineStore('story-generator', () => {
 
   const story = ref({
@@ -18,13 +26,28 @@ export const useStoryGeneratorStore = defineStore('story-generator', () => {
     return await oralStory.runPreTestSilent()
   }
 
-  async function saveStory(value: string): Promise<void> {
-    console.log(value)
+  async function saveStory(): Promise<void> {
+
+    console.log("helo")
   }
 
-  async function exportStory(value: string): Promise<void> {
-    console.log(value)
+  async function exportStory(value: HTMLElement): Promise<void> {
+
+    const data = await asBlob(value.innerHTML, { orientation: 'portrait', margins: { top: 100 } })
+
+    const fileName = 'exported_story.docx';
+
+    File.writeFile(File.externalRootDirectory + "/Download", fileName,
+      new Blob([data]), { replace: true }
+    );
+    FileOpener.open(
+      File.externalRootDirectory + "/Download/" + fileName,
+      "application/pdf"
+    );
+
+
   }
 
   return { generateOralStory, story, saveStory, exportStory }
 })
+

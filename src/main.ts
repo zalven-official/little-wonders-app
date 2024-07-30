@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
 import { createPinia } from 'pinia'
-
+import 'vue3-toastify/dist/index.css';
+import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
 import { IonicVue } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -40,6 +41,9 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router)
   .use(pinia)
+  .use(Vue3Toastify, {
+    autoClose: 3000,
+  } as ToastContainerOptions);
 
 router.isReady().then(() => {
   app.mount('#app');
