@@ -19,7 +19,7 @@ export interface IOralStory {
   published: Date
 
   content: string
-  readingMaterial: string
+  story: string
   questions: string
   poster: string
 }

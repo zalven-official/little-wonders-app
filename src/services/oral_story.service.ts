@@ -54,9 +54,9 @@ export default class OralStory {
 
   private async generateQuestionnaire(): Promise<string> {
     const content = this.generateReadingMaterialContent();
-    const generatedReadingMaterial = this.generateReadingMaterial();
+    const story = this.generateReadingMaterial();
     const questionnairePromptFormat = `
-      ${content}\n${generatedReadingMaterial}
+      ${content}\n${story}
       Create a questionnaire based on the content above. Make sure the format is just like Phil-IRI questionnaires that is appropriate for ${this.gradeLevel} and for ${this.testType}, multiple choices.
       Keep in mind that this only returns the content, not the description, title, or any placeholders. If there is a placeholder, just put any random input for it.
     `;
@@ -76,7 +76,7 @@ export default class OralStory {
       title: this.title,
       published: new Date(),
       content: content,
-      readingMaterial: generatedReadingMaterial,
+      story: generatedReadingMaterial,
       questions: questions,
       poster: poster
     };
