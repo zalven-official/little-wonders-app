@@ -157,12 +157,10 @@ export function imageUrlToHtmlImageElement(
 
       canvas.width = imgElement.width;
       canvas.height = imgElement.height;
-      console.log(imgElement)
 
       if (ctx) {
         ctx.drawImage(imgElement, 0, 0);
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-        console.log(imageData)
         resolve(imageData as unknown as HTMLImageElement)
       }
     }

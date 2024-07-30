@@ -120,7 +120,6 @@ Keep in mind that this only returns the content, not the description, title, or 
     await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
 
     await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
-    console.log("PDF file generated and opened successfully.");
   }
 
   return {

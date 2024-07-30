@@ -117,7 +117,6 @@ const formatBionicText = (htmlContent: string) => {
         elementNode.childNodes.forEach(removeStrongTags);
       }
     };
-    console.log(tempDiv)
     removeStrongTags(tempDiv);
   }
   return tempDiv.innerHTML;
