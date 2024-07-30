@@ -1,9 +1,12 @@
+### Run project
+sudo ionic capacitor run android
+
 ### Buld project
 ```
 ./gradlew clean
 sudo ionic build
 sudo npx cap sync
-sudo npx cap open android
+sudo npx cap open android # Dont use if it's already open
 sudo chown -R $(whoami) .
 ```
 ### Phil-IRI Post Test

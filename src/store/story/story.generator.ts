@@ -4,13 +4,10 @@ import OralStory from '@/services/oral_story.service'
 import { Level, TestType, IOralStory } from '@/services/types';
 import { ref } from 'vue';
 
-
-import { asBlob } from 'html-docx-js-typescript'
-import { File } from "@ionic-native/file";
-import { FileOpener } from "@ionic-native/file-opener";
-
-
-
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas-pro';
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
 
 export const useStoryGeneratorStore = defineStore('story-generator', () => {
 
@@ -33,17 +30,36 @@ export const useStoryGeneratorStore = defineStore('story-generator', () => {
 
   async function exportStory(value: HTMLElement): Promise<void> {
 
-    try {
-      const data = await asBlob(value.outerHTML);
-      const fileName = 'exported_story.docx';
-      const filePath = File.externalRootDirectory + "/Download";
-      await File.writeFile(filePath, fileName, data, { replace: true });
-      await FileOpener.open(filePath + "/" + fileName, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    // Convert HTML to Canvas
+    // Convert HTML to Canvas
+    const canvas = await html2canvas(value);
+    const imgData = canvas.toDataURL("image/PNG");
 
-    } catch (error) {
-      console.error('Error exporting story:', error);
+    const doc = new jsPDF("p", "mm", "a4");
+    const imgWidth = 190; // Width of the A4 page minus the margin
+    const pageHeight = 295; // Height of A4 page
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate height to maintain aspect ratio
+    let heightLeft = imgHeight;
+    let position = 10; // Margin from top
+
+    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    // If the content is taller than one page, add another page
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      doc.addPage();
+      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
     }
 
+    const pdfOutput = doc.output('arraybuffer'); // Generate PDF as array buffer
+
+    const fileName = "example.pdf";
+    await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
+
+    await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
+    console.log("PDF file generated and opened successfully.");
   }
 
   return { generateOralStory, story, saveStory, exportStory }
