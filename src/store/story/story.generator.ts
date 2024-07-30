@@ -33,18 +33,16 @@ export const useStoryGeneratorStore = defineStore('story-generator', () => {
 
   async function exportStory(value: HTMLElement): Promise<void> {
 
-    const data = await asBlob(value.innerHTML, { orientation: 'portrait', margins: { top: 100 } })
+    try {
+      const data = await asBlob(value.outerHTML);
+      const fileName = 'exported_story.docx';
+      const filePath = File.externalRootDirectory + "/Download";
+      await File.writeFile(filePath, fileName, data, { replace: true });
+      await FileOpener.open(filePath + "/" + fileName, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
-    const fileName = 'exported_story.docx';
-
-    File.writeFile(File.externalRootDirectory + "/Download", fileName,
-      new Blob([data]), { replace: true }
-    );
-    FileOpener.open(
-      File.externalRootDirectory + "/Download/" + fileName,
-      "application/pdf"
-    );
-
+    } catch (error) {
+      console.error('Error exporting story:', error);
+    }
 
   }
 

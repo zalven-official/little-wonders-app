@@ -1,3 +1,11 @@
+### Buld project
+```
+./gradlew clean
+sudo ionic build
+sudo npx cap sync
+sudo npx cap open android
+sudo chown -R $(whoami) .
+```
 ### Phil-IRI Post Test
 
 The Philippine Informal Reading Inventory (Phil-IRI) Post Test is an assessment tool used at the end of an instructional period to measure and describe students' reading performance. It provides valuable information to teachers regarding students' progress in reading skills, both in oral and silent reading contexts. The results can be compared to pre-test outcomes to determine the effectiveness of the reading instruction and identify areas that may require further intervention.
