@@ -13,6 +13,7 @@ export default {
   },
   plugins: [
     require('daisyui'),
+    require('@tailwindcss/typography'),
   ],
   safelist: [
     { pattern: /bg-opacity-(\d{1,2}|100)/ },

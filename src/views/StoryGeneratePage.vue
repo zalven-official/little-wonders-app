@@ -68,7 +68,11 @@
 
       </div>
 
-      <div ref="generatedResult" v-html="generatedStory" class="z-10 text-sm"></div>
+      <div ref="generatedResult">
+        <TipTapEditor v-model="story.title" :is-bionic="isBionic"></TipTapEditor>
+        <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
+        <TipTapEditor v-model="story.questions" :is-bionic="isBionic"></TipTapEditor>
+      </div>
 
       <div class="my-5">
         <button class="btn btn-primary my-4" type="button" @click="generateOralQuestionnaire"
@@ -102,18 +106,21 @@
 
 <script setup lang="ts">
 import MainLayout from '@/components/layouts/MainLayout.vue';
+import TipTapEditor from '@/components/global/TipTapEditor.vue';
 import { useThemeStore } from '@/store/ui/theme.store'
 import { Level, TestType, IOralStory } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useStoryGeneratorStore } from '@/store/story/story.generator';
-import { useBionicStore } from '@/store/composables/'
+
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
 const storyGenerator = useStoryGeneratorStore()
-const bionic = useBionicStore()
+
+
 const themeStore = useThemeStore()
+
 
 const {
   backgroundOpacity,
@@ -126,10 +133,9 @@ const isLoading = ref(false)
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
 
-const generatedStory = computed(() => bionic.convert(
-  `${result.value?.story}\n\n${result.value?.questions}`, isBionic.value
-))
-
+// const generatedStory = computed(() => bionic.convert(
+//   `${result.value?.story}\n\n${result.value?.questions}`, isBionic.value
+// ))
 async function generateStory(): Promise<void> {
   isLoading.value = true
   try {

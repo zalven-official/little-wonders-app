@@ -4,8 +4,8 @@ import { defineStore } from 'pinia'
 export const useBionicStore = defineStore('bionic', () => {
 
   function convert(value: string, isBionic: boolean) {
-    if (!value) {
-      return 'No Storyline'
+    if (!value.trim()) {
+      return ''
     }
 
     const data = value.trim().replace(/  +/g, ' ').split(' ')
@@ -21,14 +21,14 @@ export const useBionicStore = defineStore('bionic', () => {
       let processedItem = '';
 
       if (isBionic)
-        processedItem += `<span class='font-black''>${preElem.slice(0, mid)}</span>`
+        processedItem += `<strong>${preElem.slice(0, mid)}</strong>`
       else
-        processedItem += `<span class='font-light'>${preElem.slice(0, mid)}</span>`
+        processedItem += `<span>${preElem.slice(0, mid)}</span>`
 
       if (showNewLine) {
         processedItem += '<br /><br />';
       }
-      processedItem += `<span class='font-light'>${preElem.slice(mid)}</span>`;
+      processedItem += `<span>${preElem.slice(mid)}</span>`;
       return processedItem
     })
     return result.join(' ')
