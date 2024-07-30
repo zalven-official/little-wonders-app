@@ -34,7 +34,7 @@ export class OpenAIClient {
     messages: Message[],
     chatModelName: string = this.CHAT_MODEL_NAME,
     temperature: number = 0.2,
-    maxTokens: number = 150
+    maxTokens: number = 2000
   ): Promise<string | undefined> {
     try {
       const response = await this.client.chat.completions.create({

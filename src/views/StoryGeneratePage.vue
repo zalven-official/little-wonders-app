@@ -80,12 +80,6 @@
           <SparklesIcon class="w-5" />
           Generate Questionnaire
         </button>
-
-        <button class="btn btn-primary my-4" type="button" @click="generatePoster"
-          v-if="result?.story && result?.questions">
-          <SparklesIcon class="w-5" />
-          Generate Poster
-        </button>
       </div>
 
       <div class="mt-14">
@@ -94,9 +88,9 @@
           Save as Docx
         </button>
 
-        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
+        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory" disabled>
           <SaveIcon class="w-5" />
-          Story
+          Save Story - Not yet available
         </button>
       </div>
 
@@ -161,17 +155,6 @@ async function generateOralQuestionnaire(): Promise<void> {
 }
 
 
-async function generatePoster(): Promise<void> {
-  isLoading.value = true
-  try {
-    result.value = await storyGenerator.generatePoster()
-    toast.success("Successfully generating the questionnaires")
-  } catch (e) {
-    toast.error("Something Wrong Generating the questionnaired")
-  } finally {
-    isLoading.value = false
-  }
-}
 
 
 
