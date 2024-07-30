@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 
-import OralStory from '@/services/oral_story.service'
 import { Level, TestType, IOralStory } from '@/services/types';
 import { ref } from 'vue';
 
@@ -9,44 +8,105 @@ import html2canvas from 'html2canvas-pro';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
 import { formatStringForFileName } from '@/lib';
+import { OpenAIClient } from '@/services';
 
 export const useStoryGeneratorStore = defineStore('story-generator', () => {
-
-  const story = ref({
-    level: Level.GRADE_4,
+  const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
+  const story = ref<IOralStory>({
+    gradeLevel: Level.GRADE_4,
     testType: TestType.POSTTEST,
     title: '',
     description: '',
+
+    published: new Date(),
+    content: '',
+    story: '',
+    questions: '',
+    poster: ''
   })
 
+  function content() {
+    return `
+Phil-IRI (The Philippine Informal Reading Inventory Assessment Tool)
+${story.value.gradeLevel} - ${story.value.testType} - Silent Reading
+GRADE LEVEL PASSAGE RATING SHEET
+Title: ${story.value.title}
+Description: ${story.value.description}`
+  }
+
+  function storyGeneratorPrompt() {
+    return `
+${content()}
+Create a reading material content based on the content above. Make sure the format is just like Phil-IRI reading materials that is appropriate for ${story.value.gradeLevel} and for ${story.value.testType}, short and manageable reading materials.
+Phil-IRI reading materials are structured to assess the reading abilities and comprehension skills of students in the Philippines.
+Keep in mind that this only returns the content, not the description, title, or any placeholders. If there is a placeholder, just put any random input for it.`
+  }
+
+  function questionnaireGeneratorPrompt() {
+    return `
+${content()}\n${story.value.story}\n
+Create a questionnaire based on the content above. Make sure the format is just like Phil-IRI questionnaires that is appropriate for ${story.value.gradeLevel} and for ${story.value.testType}, multiple choices.
+Keep in mind that this only returns the content, not the description, title, or any placeholders. If there is a placeholder, just put any random input for it.`;
+  }
+
   async function generateOralStory(): Promise<IOralStory> {
-    const oralStory = new OralStory(story.value.level, story.value.testType, story.value.title, story.value.description);
-    return await oralStory.runPreTestSilent()
+    if (!story.value.title.trim() || !story.value.description.trim()) {
+      throw Error("Title & Description are empty")
+    }
+    const prompt = storyGeneratorPrompt()
+    const storyResult = await openai.apiCall([
+      { "role": "system", "content": "You are a professional teacher working at the Department of Education (DepEd), skilled in fostering student growth, particularly in the areas of reading, critical thinking, and problem-solving." },
+      { "role": "user", "content": prompt },
+    ])
+    if (storyResult)
+      story.value = { ...story.value, story: storyResult, content: content(), questions: '', poster: '' }
+    return story.value
+  }
+
+
+  async function generateOralQuestionnaire(): Promise<IOralStory> {
+    if (!story.value.title.trim() || !story.value.description.trim()) {
+      throw Error("Title & Description are empty")
+    }
+    if (!story.value.story.trim()) {
+      throw Error("The story are empty")
+    }
+    const prompt = questionnaireGeneratorPrompt()
+
+    const questionnareResult = await openai.apiCall([
+      { "role": "system", "content": "You are a professional teacher working at the Department of Education (DepEd), skilled in fostering student growth, particularly in the areas of reading, critical thinking, and problem-solving." },
+      { "role": "user", "content": prompt },
+    ])
+
+    if (questionnareResult)
+      story.value = { ...story.value, questions: questionnareResult }
+    console.log(questionnareResult)
+    return story.value
+  }
+  async function generatePoster(): Promise<IOralStory> {
+    return story.value
   }
 
   async function saveStory(): Promise<void> {
-
     console.log("helo")
   }
 
+
   async function exportStory(value: HTMLElement): Promise<void> {
 
-    // Convert HTML to Canvas
-    // Convert HTML to Canvas
     const canvas = await html2canvas(value);
     const imgData = canvas.toDataURL("image/PNG");
 
     const doc = new jsPDF("p", "mm", "a4");
-    const imgWidth = 190; // Width of the A4 page minus the margin
-    const pageHeight = 295; // Height of A4 page
-    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate height to maintain aspect ratio
+    const imgWidth = 190;
+    const pageHeight = 295;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
     let heightLeft = imgHeight;
-    let position = 10; // Margin from top
+    let position = 10;
 
     doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
 
-    // If the content is taller than one page, add another page
     while (heightLeft >= 0) {
       position = heightLeft - imgHeight;
       doc.addPage();
@@ -54,7 +114,7 @@ export const useStoryGeneratorStore = defineStore('story-generator', () => {
       heightLeft -= pageHeight;
     }
 
-    const pdfOutput = doc.output('arraybuffer'); // Generate PDF as array buffer
+    const pdfOutput = doc.output('arraybuffer');
 
     const fileName = `${formatStringForFileName(story.value.title)}.pdf`;
     await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
@@ -63,6 +123,13 @@ export const useStoryGeneratorStore = defineStore('story-generator', () => {
     console.log("PDF file generated and opened successfully.");
   }
 
-  return { generateOralStory, story, saveStory, exportStory }
+  return {
+    generateOralStory,
+    generateOralQuestionnaire,
+    generatePoster,
+    story,
+    saveStory,
+    exportStory
+  }
 })
 

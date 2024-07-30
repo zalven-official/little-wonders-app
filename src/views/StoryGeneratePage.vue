@@ -20,7 +20,7 @@
         <div class="label">
           <span class="label-text">Students' Grade Level</span>
         </div>
-        <select v-model="story.level" class="select select-bordered w-full ">
+        <select v-model="story.gradeLevel" class="select select-bordered w-full ">
           <option :value="Level.GRADE_4">Grade 4</option>
           <option :value="Level.GRADE_5">Grade 5</option>
           <option :value="Level.GRADE_6">Grade 6</option>
@@ -52,10 +52,12 @@
         <textarea class="textarea textarea-bordered" v-model="story.description"
           placeholder="Once upon a time in a land far, far away..." />
       </label>
+
       <button class="btn btn-primary my-4" type="button" @click="generateStory">
         <SparklesIcon class="w-5" />
         Generate Story
       </button>
+
     </form>
 
     <div v-if="result"
@@ -66,17 +68,33 @@
 
       </div>
 
-      <div ref="generatedResult" v-html="generatedStory"></div>
+      <div ref="generatedResult" v-html="generatedStory" class="z-10 text-sm"></div>
 
-      <button class="btn btn-outline btn-primary my-2" type="button" @click="exportStory">
-        <DownloadIcon class="w-5" />
-        Save as Docx
-      </button>
+      <div class="my-5">
+        <button class="btn btn-primary my-4" type="button" @click="generateOralQuestionnaire"
+          v-if="result?.story && !result?.questions">
+          <SparklesIcon class="w-5" />
+          Generate Questionnaire
+        </button>
 
-      <button class="btn btn-primary my-2" type="button" @click="saveStory">
-        <SaveIcon class="w-5" />
-        Story
-      </button>
+        <button class="btn btn-primary my-4" type="button" @click="generatePoster"
+          v-if="result?.story && result?.questions">
+          <SparklesIcon class="w-5" />
+          Generate Poster
+        </button>
+      </div>
+
+      <div class="mt-14">
+        <button class="btn btn-outline btn-primary my-2 w-full" type="button" @click="exportStory">
+          <DownloadIcon class="w-5" />
+          Save as Docx
+        </button>
+
+        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
+          <SaveIcon class="w-5" />
+          Story
+        </button>
+      </div>
 
     </div>
   </MainLayout>
@@ -109,7 +127,7 @@ const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
 
 const generatedStory = computed(() => bionic.convert(
-  result.value?.story ?? '', isBionic.value
+  `${result.value?.story}\n\n${result.value?.questions}`, isBionic.value
 ))
 
 async function generateStory(): Promise<void> {
@@ -118,12 +136,42 @@ async function generateStory(): Promise<void> {
     result.value = await storyGenerator.generateOralStory()
     toast.success("Successfully generating the story")
   } catch (e) {
-    toast.error("Something Wrong Generating the Story")
+    toast.error(`Something Wrong Generating the Story: ${e}`)
   } finally {
     isLoading.value = false
   }
 }
 
+async function generateOralQuestionnaire(): Promise<void> {
+  isLoading.value = true
+  try {
+    result.value = await storyGenerator.generateOralQuestionnaire()
+    toast.success("Successfully generating the questionnaires")
+  } catch (e) {
+    toast.error("Something Wrong Generating the questionnaired")
+  } finally {
+    isLoading.value = false
+  }
+}
+
+
+async function generatePoster(): Promise<void> {
+  isLoading.value = true
+  try {
+    result.value = await storyGenerator.generatePoster()
+    toast.success("Successfully generating the questionnaires")
+  } catch (e) {
+    toast.error("Something Wrong Generating the questionnaired")
+  } finally {
+    isLoading.value = false
+  }
+}
+
+
+
+
+
+// Export ---------------------------------------
 async function exportStory(): Promise<void> {
   isLoading.value = true
   try {

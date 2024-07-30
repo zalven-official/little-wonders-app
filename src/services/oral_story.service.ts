@@ -75,6 +75,7 @@ export default class OralStory {
       description: this.description,
       title: this.title,
       published: new Date(),
+
       content: content,
       story: generatedReadingMaterial,
       questions: questions,
