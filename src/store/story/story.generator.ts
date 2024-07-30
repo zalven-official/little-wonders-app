@@ -8,6 +8,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas-pro';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
+import { formatStringForFileName } from '@/lib';
 
 export const useStoryGeneratorStore = defineStore('story-generator', () => {
 
@@ -55,7 +56,7 @@ export const useStoryGeneratorStore = defineStore('story-generator', () => {
 
     const pdfOutput = doc.output('arraybuffer'); // Generate PDF as array buffer
 
-    const fileName = "example.pdf";
+    const fileName = `${formatStringForFileName(story.value.title)}.pdf`;
     await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
 
     await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");

@@ -1,5 +1,5 @@
 <template>
-  <MainLayout>
+  <MainLayout :is-loading="isLoading">
     <div class="my-10 p-8 bg-white backdrop-blur-sm">
       <p class="font-bold text-lg text-center w-full flex items-center justify-center">
         <SparklesIcon class="w-5 mr-2 " /> Generate Phil Iri Story 11
@@ -60,9 +60,9 @@
 
     <div v-if="result"
       :class="` card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 p-5 overflow-y-auto`">
-      <div class="flex items-center m-3">
+      <div class="shadow flex items-center m-5 rounded-lg">
         <input type="checkbox" class="m-2 toggle toggle-success" v-model="isBionic" />
-        <p class="m-2 text-sm">{{ isBionic ? 'Convert to Bionic' : 'Normal' }}</p>
+        <p class="m-2 text-sm">{{ !isBionic ? 'Convert to Bionic' : 'Normal' }}</p>
 
       </div>
 

@@ -173,3 +173,10 @@ export function imageUrlToHtmlImageElement(
     }
   })
 }
+
+export function formatStringForFileName(input: string): string {
+  const cleanedString = input.trim().replace(/\s+/g, '  ');
+  const formattedString = cleanedString.replace(/\s/g, '-').toLowerCase();
+  const timestamp = Date.now();
+  return `${formattedString}-${timestamp}`;
+}
