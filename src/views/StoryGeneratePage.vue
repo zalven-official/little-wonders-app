@@ -20,6 +20,131 @@
         <div class="label">
           <span class="label-text">Students' Grade Level</span>
         </div>
+        <select v-model="story.level" class="select select-bordered w-full ">
+          <option :value="Level.GRADE_4">Grade 4</option>
+          <option :value="Level.GRADE_5">Grade 5</option>
+          <option :value="Level.GRADE_6">Grade 6</option>
+        </select>
+      </label>
+
+
+      <label class="form-control w-full my-2">
+        <div class="label">
+          <span class="label-text">Test Type</span>
+        </div>
+        <select v-model="story.testType" class="select select-bordered w-full ">
+          <option :value="TestType.PRETEST">Pre Test</option>
+          <option :value="TestType.POSTTEST">Post Test</option>
+          <option :value="TestType.STORY">Story</option>
+        </select>
+      </label>
+
+      <label class="form-control w-full my-2">
+        <div class="label">
+          <span class="label-text">Story Title</span>
+        </div>
+        <input v-model="story.title" type="text" placeholder="Type your story title..."
+          class="input input-bordered w-full" />
+      </label>
+
+      <label class="form-control w-full my-2">
+        <div class="label">
+          <span class="label-text">Story Description</span>
+        </div>
+        <textarea class="textarea textarea-bordered" v-model="story.description"
+          placeholder="Once upon a time in a land far, far away..." />
+      </label>
+
+
+      <button class="btn btn-primary my-4" type="button" @click="generateStory">
+        <SparklesIcon class="w-5" />
+        Generate Story
+      </button>
+
+
+    </form>
+    <div v-if="result"
+      :class="` card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 p-5 overflow-y-auto`">
+      <div ref="generatedResult">
+        {{ result }}
+      </div>
+
+      <button class="btn btn-outline btn-primary my-2" type="button" @click="generateStory">
+        <SparklesIcon class="w-5" />
+        Save as Docx
+      </button>
+
+      <button class="btn btn-primary my-2" type="button" @click="generateStory">
+        <SparklesIcon class="w-5" />
+        Story
+      </button>
+
+    </div>
+
+
+  </MainLayout>
+</template>
+
+<script setup lang="ts">
+import MainLayout from '@/components/layouts/MainLayout.vue';
+import { useThemeStore } from '@/store/ui/theme.store'
+import { Level, TestType, IOralStory } from '@/services/types';
+
+// import { SparklesIcon, TrashIcon } from 'lucide-vue-next';
+import { useStoryGeneratorStore } from '@/store/story/story.generator';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+
+const storyGenerator = useStoryGeneratorStore()
+const themeStore = useThemeStore()
+
+const {
+  backgroundOpacity,
+  backgroundBlur,
+} = storeToRefs(themeStore)
+
+const { story } = storeToRefs(storyGenerator)
+const result = ref<IOralStory>()
+const isLoading = ref(false)
+const generatedResult = ref()
+
+async function generateStory(): Promise<void> {
+  isLoading.value = true
+  try {
+    result.value = await storyGenerator.generateOralStory()
+    console.log(result.value)
+    console.log(generatedResult.value)
+  } catch (e) {
+    console.log(e)
+  } finally {
+    isLoading.value = false
+  }
+}
+// const questionSize = ref(5)
+
+</script>
+<!-- <template>
+  <MainLayout>
+    <div class="my-10 p-8 bg-white backdrop-blur-sm">
+      <p class="font-bold text-lg text-center w-full flex items-center justify-center">
+        <SparklesIcon class="w-5 mr-2 " /> Generate Phil Iri Story
+      </p>
+      <p class="mt-5 text-xs text-center w-full">
+        The Philippine Informal Reading Inventory (Phil-IRI) helps teachers assess students' reading skills. Our app
+        supports this by generating personalized stories and questions for different reading levels, making learning fun
+        and effective.
+      </p>
+      <p class="mt-5 text-xs text-center w-full opacity-60">
+        BEED 3B - 2024 - 2025
+      </p>
+    </div>
+    <form
+      :class="` card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 p-5 overflow-y-auto`">
+
+      <label class="form-control w-full my-2">
+        <div class="label">
+          <span class="label-text">Students' Grade Level</span>
+        </div>
 
         <select v-model="story.level" class="select select-bordered w-full ">
           <option :value="Level.GRADE_4">Grade 4</option>
@@ -56,7 +181,6 @@
 
 
 
-      <!-- Pretest -->
       <div>
         <div v-html="story.story" class="border p-2 rounded"></div>
         <label class="form-control w-full my-5">
@@ -123,4 +247,4 @@ watch([questionSize], ([val]) => {
     questionSize.value = 10
   }
 })
-</script>
+</script> -->
