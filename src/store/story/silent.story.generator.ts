@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { Level, TestType, IOralStory } from '@/services/types';
+import { Level, TestType, IStory, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
 
 import jsPDF from 'jspdf';
@@ -10,9 +10,9 @@ import { FileOpener } from '@ionic-native/file-opener';
 import { formatStringForFileName } from '@/lib';
 import { OpenAIClient } from '@/services';
 
-export const useOralStoryGeneratorStore = defineStore('oral-story-generator', () => {
+export const useSilentStoryGeneratorStore = defineStore('silent-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
-  const story = ref<IOralStory>({
+  const story = ref<IStory>({
     gradeLevel: Level.GRADE_4,
     testType: TestType.POSTTEST,
     title: '',
@@ -22,7 +22,8 @@ export const useOralStoryGeneratorStore = defineStore('oral-story-generator', ()
     content: '',
     story: '',
     questions: '',
-    poster: ''
+    poster: '',
+    readingMode: ReadingMode.SILENT_READING
   })
 
   function content() {
@@ -52,7 +53,7 @@ Keep in mind that this only returns the content, not the description, title, or 
   function posterGeneratorPrompt() {
     return `Based on these content create me a cartoonish or animated image based on the this "${story.value.title}" and ${story.value.description}.`
   }
-  async function generateOralStory(): Promise<IOralStory> {
+  async function generateSilentStory(): Promise<IStory> {
     if (!story.value.title.trim() || !story.value.description.trim()) {
       throw Error("Title & Description are empty")
     }
@@ -67,7 +68,7 @@ Keep in mind that this only returns the content, not the description, title, or 
   }
 
 
-  async function generateOralQuestionnaire(): Promise<IOralStory> {
+  async function generateSilentQuestionnaire(): Promise<IStory> {
     if (!story.value.title.trim() || !story.value.description.trim()) {
       throw Error("Title & Description are empty")
     }
@@ -85,7 +86,7 @@ Keep in mind that this only returns the content, not the description, title, or 
       story.value = { ...story.value, questions: questionnareResult }
     return story.value
   }
-  async function generatePoster(): Promise<IOralStory> {
+  async function generatePoster(): Promise<IStory> {
     const prompt = posterGeneratorPrompt()
     const image = await openai.generateImage(prompt)
     const generatedPoster = `data:image/png;base64,${image[0].b64_json}`
@@ -126,7 +127,7 @@ Keep in mind that this only returns the content, not the description, title, or 
 
     const pdfOutput = doc.output('arraybuffer');
 
-    const fileName = `${formatStringForFileName(story.value.title)}.pdf`;
+    const fileName = `${formatStringForFileName(story.value.title)}-silent.pdf`;
     await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
 
     await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
@@ -134,8 +135,8 @@ Keep in mind that this only returns the content, not the description, title, or 
   }
 
   return {
-    generateOralStory,
-    generateOralQuestionnaire,
+    generateSilentStory,
+    generateSilentQuestionnaire,
     generatePoster,
     story,
     saveStory,

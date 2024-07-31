@@ -16,16 +16,28 @@ export enum ReadingMode {
   SILENT_READING = 'Silent reading'
 }
 
-export interface IOralStory {
-  gradeLevel: Level
-  testType: TestType
-  description: string
-  title: string
-  published: Date
-  readingMode: ReadingMode
+interface IBaseOralStory {
+  gradeLevel: Level;
+  testType: TestType;
+  description: string;
+  title: string;
+  published: Date;
+  readingMode: ReadingMode;
 
-  content: string
-  story: string
-  questions: string
-  poster: string
+  content: string;
+  story: string;
+  questions: string;
+  poster: string;
 }
+
+interface IOralStoryOral extends IBaseOralStory {
+  readingMode: ReadingMode.ORAL_READING;
+  prompt: string;
+}
+
+interface ISilentStory extends IBaseOralStory {
+  readingMode: ReadingMode.SILENT_READING;
+  prompt?: never;
+}
+
+export type IStory = IOralStoryOral | ISilentStory;

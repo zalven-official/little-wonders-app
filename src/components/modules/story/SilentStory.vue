@@ -67,7 +67,7 @@
 
 
       <div class="my-5">
-        <button class="btn btn-primary my-4" type="button" @click="generateOralQuestionnaire"
+        <button class="btn btn-primary my-4" type="button" @click="generateSilentQuestionnaire"
           v-if="result?.story && !result?.questions">
           <SparklesIcon class="w-5" />
           Generate Questionnaire
@@ -99,10 +99,10 @@
 <script setup lang="ts">
 import TipTapEditor from '@/components/global/TipTapEditor.vue';
 import { useThemeStore } from '@/store/ui/theme.store'
-import { Level, TestType, IOralStory } from '@/services/types';
+import { Level, TestType, IStory } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
-import { useOralStoryGeneratorStore } from '@/store/story/oral_story.generator';
+import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generator';
 
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
@@ -118,7 +118,7 @@ const emit = defineEmits<{
   (e: 'update:isLoading', value: boolean): void;
 }>()
 
-const oralStoryGenerator = useOralStoryGeneratorStore()
+const oralStoryGenerator = useSilentStoryGeneratorStore()
 
 
 const themeStore = useThemeStore()
@@ -130,14 +130,14 @@ const {
 } = storeToRefs(themeStore)
 
 const { story } = storeToRefs(oralStoryGenerator)
-const result = ref<IOralStory>()
+const result = ref<IStory>()
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
 
 async function generateStory(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateOralStory()
+    result.value = await oralStoryGenerator.generateSilentStory()
     toast.success("Successfully generating the story")
   } catch (e) {
     toast.error(`Something Wrong Generating the Story: ${e}`)
@@ -146,10 +146,10 @@ async function generateStory(): Promise<void> {
   }
 }
 
-async function generateOralQuestionnaire(): Promise<void> {
+async function generateSilentQuestionnaire(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateOralQuestionnaire()
+    result.value = await oralStoryGenerator.generateSilentQuestionnaire()
     toast.success("Successfully generating the questionnaires")
   } catch (e) {
     toast.error("Something Wrong Generating the questionnaires")
