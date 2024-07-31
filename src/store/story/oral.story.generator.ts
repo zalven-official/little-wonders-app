@@ -36,7 +36,7 @@ Prompt: ${story.value.prompt}`
 
   function storyGeneratorPrompt() {
     return `
-${content}
+${content()}
 Create a reading material based on the content above and prompt. Make sure the format is just like Phil-IRI, short and manageable reading material.
 Phil-IRI stories are structured to assess the reading abilities and comprehension skills of students in the Philippines.
 Keep in mind that this only returns the content, not the description, title, or any placeholders. If there is a placeholder, just put any random input for it.
@@ -44,7 +44,7 @@ That means names, date, subject, or place should be named depending on your choi
   }
 
   function questionnare(question_type: string, question_description: string) {
-    return `${content}\n
+    return `${content()}\n
 content: ${story.value.story}
 
 Create a questionnaire based on the content above, following the format of Phil-IRI questionnaires that is appropriate for ${story.value.gradeLevel} and ${story.value.testType}.
@@ -128,7 +128,7 @@ Please provide an answer, or a different possible answer but connected to the co
       { "role": "user", "content": prompt },
     ])
     if (questionnareResult)
-      story.value = { ...story.value, interpretiveQuestions: questionnareResult }
+      story.value = { ...story.value, appliedQuestions: questionnareResult }
     return story.value
   }
 
@@ -144,6 +144,10 @@ Please provide an answer, or a different possible answer but connected to the co
     return story.value
   }
 
+  async function saveStory(): Promise<void> {
+    console.log("helo")
+  }
+
   return {
     story,
     generateOralStory,
@@ -151,6 +155,7 @@ Please provide an answer, or a different possible answer but connected to the co
     generateInterpretiveQuestions,
     generateAppliedQuestions,
     generatePoster,
+    saveStory
   }
 
 })

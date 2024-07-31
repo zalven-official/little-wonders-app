@@ -119,18 +119,16 @@ const emit = defineEmits<{
   (e: 'update:isLoading', value: boolean): void;
 }>()
 
-const oralStoryGenerator = useSilentStoryGeneratorStore()
-
+const silentStoryGenerator = useSilentStoryGeneratorStore()
 
 const themeStore = useThemeStore()
-
 
 const {
   backgroundOpacity,
   backgroundBlur,
 } = storeToRefs(themeStore)
 
-const { story } = storeToRefs(oralStoryGenerator)
+const { story } = storeToRefs(silentStoryGenerator)
 const result = ref<IStory>()
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
@@ -138,7 +136,7 @@ const generatedResult = ref<HTMLElement>()
 async function generateStory(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateSilentStory()
+    result.value = await silentStoryGenerator.generateSilentStory()
     toast.success("Successfully generating the story")
   } catch (e) {
     toast.error(`Something Wrong Generating the Story: ${e}`)
@@ -150,7 +148,7 @@ async function generateStory(): Promise<void> {
 async function generateSilentQuestionnaire(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateSilentQuestionnaire()
+    result.value = await silentStoryGenerator.generateSilentQuestionnaire()
     toast.success("Successfully generating the questionnaires")
   } catch (e) {
     toast.error("Something Wrong Generating the questionnaires")
@@ -163,7 +161,7 @@ async function generateSilentQuestionnaire(): Promise<void> {
 async function generatePoster(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generatePoster()
+    result.value = await silentStoryGenerator.generatePoster()
     toast.success("Successfully generating the poster")
   } catch (e) {
     toast.error(`Something Wrong Generating the poster ${e}`)
@@ -179,7 +177,7 @@ async function exportStory(): Promise<void> {
   emit('update:isLoading', true)
   try {
     if (generatedResult.value) {
-      await exportFile(generatedResult.value, story.value.title)
+      await exportFile(generatedResult.value, `${story.value.title}-SILENT`)
       toast.success("Successfully exporting the story")
     }
   } catch (e) {
@@ -193,7 +191,7 @@ async function exportStory(): Promise<void> {
 async function saveStory(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    await oralStoryGenerator.saveStory()
+    await silentStoryGenerator.saveStory()
     toast.success("Successfully saving the story")
   } catch (e) {
     toast.error("Something Wrong Saving the Story")

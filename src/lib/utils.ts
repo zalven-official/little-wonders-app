@@ -220,7 +220,7 @@ export async function exportFile(value: HTMLElement, name: string): Promise<void
 
   const pdfOutput = doc.output('arraybuffer');
 
-  const fileName = `${formatStringForFileName(name)}-silent.pdf`;
+  const fileName = `${formatStringForFileName(name)}.pdf`;
   await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
 
   await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
