@@ -3,11 +3,6 @@ import { defineStore } from 'pinia'
 import { Level, TestType, IStory, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
 
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas-pro';
-import { File } from '@ionic-native/file';
-import { FileOpener } from '@ionic-native/file-opener';
-import { formatStringForFileName } from '@/lib';
 import { OpenAIClient } from '@/services';
 
 export const useSilentStoryGeneratorStore = defineStore('silent-story-generator', () => {
@@ -102,45 +97,12 @@ Keep in mind that this only returns the content, not the description, title, or 
     console.log("helo")
   }
 
-
-  async function exportStory(value: HTMLElement): Promise<void> {
-
-    const canvas = await html2canvas(value);
-    const imgData = canvas.toDataURL("image/PNG");
-
-    const doc = new jsPDF("p", "mm", "a4");
-    const imgWidth = 190;
-    const pageHeight = 295;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 10;
-
-    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight;
-      doc.addPage();
-      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
-
-    const pdfOutput = doc.output('arraybuffer');
-
-    const fileName = `${formatStringForFileName(story.value.title)}-silent.pdf`;
-    await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
-
-    await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
-
-  }
-
   return {
+    story,
     generateSilentStory,
     generateSilentQuestionnaire,
     generatePoster,
-    story,
     saveStory,
-    exportStory
   }
 })
 

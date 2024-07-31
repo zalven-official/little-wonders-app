@@ -33,11 +33,17 @@ interface IBaseOralStory {
 interface IOralStoryOral extends IBaseOralStory {
   readingMode: ReadingMode.ORAL_READING;
   prompt: string;
+  literalQuestions: string
+  interpretiveQuestions: string
+  appliedQuestions: string
 }
 
 interface ISilentStory extends IBaseOralStory {
   readingMode: ReadingMode.SILENT_READING;
   prompt?: never;
+  literalQuestions?: never
+  interpretiveQuestions?: never
+  appliedQuestions?: never
 }
 
 export type IStory = IOralStoryOral | ISilentStory;

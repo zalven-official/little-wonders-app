@@ -1,5 +1,10 @@
 import CryptoJS from "crypto-js"
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas-pro';
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
+
 /**
  * Generates a fallback name based on the provided full name.
  * The fallback name consists of the initial letters of the first one or two words.
@@ -189,4 +194,35 @@ export async function urlToBase64(url: string): Promise<string> {
     reader.onerror = reject;
     reader.readAsDataURL(blob);
   });
+}
+
+export async function exportFile(value: HTMLElement, name: string): Promise<void> {
+
+  const canvas = await html2canvas(value);
+  const imgData = canvas.toDataURL("image/PNG");
+
+  const doc = new jsPDF("p", "mm", "a4");
+  const imgWidth = 190;
+  const pageHeight = 295;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  let heightLeft = imgHeight;
+  let position = 10;
+
+  doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  while (heightLeft >= 0) {
+    position = heightLeft - imgHeight;
+    doc.addPage();
+    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  const pdfOutput = doc.output('arraybuffer');
+
+  const fileName = `${formatStringForFileName(name)}-silent.pdf`;
+  await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
+
+  await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
+
 }

@@ -106,6 +106,7 @@ import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generat
 
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import { exportFile } from '@/lib';
 
 defineProps({
   isLoading: {
@@ -173,13 +174,12 @@ async function generatePoster(): Promise<void> {
 
 
 
-
 // Export ---------------------------------------
 async function exportStory(): Promise<void> {
   emit('update:isLoading', true)
   try {
     if (generatedResult.value) {
-      await oralStoryGenerator.exportStory(generatedResult.value)
+      await exportFile(generatedResult.value, story.value.title)
       toast.success("Successfully exporting the story")
     }
   } catch (e) {
