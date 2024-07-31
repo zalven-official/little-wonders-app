@@ -117,12 +117,12 @@ import { useThemeStore } from '@/store/ui/theme.store'
 import { Level, TestType, IOralStory } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
-import { useStoryGeneratorStore } from '@/store/story/story.generator';
+import { useOralStoryGeneratorStore } from '@/store/story/oral_story.generator';
 
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
-const storyGenerator = useStoryGeneratorStore()
+const oralStoryGenerator = useOralStoryGeneratorStore()
 
 
 const themeStore = useThemeStore()
@@ -133,7 +133,7 @@ const {
   backgroundBlur,
 } = storeToRefs(themeStore)
 
-const { story } = storeToRefs(storyGenerator)
+const { story } = storeToRefs(oralStoryGenerator)
 const result = ref<IOralStory>()
 const isLoading = ref(false)
 const isBionic = ref(false)
@@ -142,7 +142,7 @@ const generatedResult = ref<HTMLElement>()
 async function generateStory(): Promise<void> {
   isLoading.value = true
   try {
-    result.value = await storyGenerator.generateOralStory()
+    result.value = await oralStoryGenerator.generateOralStory()
     toast.success("Successfully generating the story")
   } catch (e) {
     toast.error(`Something Wrong Generating the Story: ${e}`)
@@ -154,7 +154,7 @@ async function generateStory(): Promise<void> {
 async function generateOralQuestionnaire(): Promise<void> {
   isLoading.value = true
   try {
-    result.value = await storyGenerator.generateOralQuestionnaire()
+    result.value = await oralStoryGenerator.generateOralQuestionnaire()
     toast.success("Successfully generating the questionnaires")
   } catch (e) {
     toast.error("Something Wrong Generating the questionnaires")
@@ -167,7 +167,7 @@ async function generateOralQuestionnaire(): Promise<void> {
 async function generatePoster(): Promise<void> {
   isLoading.value = true
   try {
-    result.value = await storyGenerator.generatePoster()
+    result.value = await oralStoryGenerator.generatePoster()
     toast.success("Successfully generating the poster")
   } catch (e) {
     toast.error(`Something Wrong Generating the poster ${e}`)
@@ -184,7 +184,7 @@ async function exportStory(): Promise<void> {
   isLoading.value = true
   try {
     if (generatedResult.value) {
-      await storyGenerator.exportStory(generatedResult.value)
+      await oralStoryGenerator.exportStory(generatedResult.value)
       toast.success("Successfully exporting the story")
     }
   } catch (e) {
@@ -196,7 +196,7 @@ async function exportStory(): Promise<void> {
 async function saveStory(): Promise<void> {
   isLoading.value = true
   try {
-    await storyGenerator.saveStory()
+    await oralStoryGenerator.saveStory()
     toast.success("Successfully saving the story")
   } catch (e) {
     toast.error("Something Wrong Saving the Story")

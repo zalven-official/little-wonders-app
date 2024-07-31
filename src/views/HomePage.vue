@@ -6,7 +6,7 @@
     <div class="flex flex-col p-5 items-center justify-center">
       <div class="mb-10">
         <div class="join w-full">
-          <select v-model="stories.filters.level" class="select join-item w-full select-sm rounded-b-none">
+          <select v-model="stories.filters.gradeLevel" class="select join-item w-full select-sm rounded-b-none">
             <option disabled selected>Grade</option>
             <option>Level</option>
             <option>Grade 4</option>
@@ -45,8 +45,8 @@
         <img :src="value.poster" class="w-40 rounded-md p-3 shadow-sm">
         <div class="p-3">
           <p class="text-sm font-semibold">{{ value.title }}</p>
-          <p class="text-xs mt-2">{{ value.subtitle }}</p>
-          <div class="capitalize badge badge-primary m-1 badge-xs p-2">{{ value.level }}</div>
+          <p class="text-xs mt-2">{{ value.description }}</p>
+          <div class="capitalize badge badge-primary m-1 badge-xs p-2">{{ value.gradeLevel }}</div>
           <div class="capitalize badge badge-secondary m-1 badge-xs p-2">{{ value.testType }}</div>
           <div class="capitalize badge badge-accent m-1 badge-xs p-2">{{ value.readingMode }}</div>
           <p class="text-xs mt-2 opacity-65">{{ readableTime(value.published) }}</p>

@@ -11,12 +11,18 @@ export enum TestType {
   STORY = "Story"
 }
 
+export enum ReadingMode {
+  ORAL_READING = 'Oral reading',
+  SILENT_READING = 'Silent reading'
+}
+
 export interface IOralStory {
   gradeLevel: Level
   testType: TestType
   description: string
   title: string
   published: Date
+  readingMode: ReadingMode
 
   content: string
   story: string

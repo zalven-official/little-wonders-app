@@ -10,7 +10,7 @@ import { FileOpener } from '@ionic-native/file-opener';
 import { formatStringForFileName } from '@/lib';
 import { OpenAIClient } from '@/services';
 
-export const useStoryGeneratorStore = defineStore('story-generator', () => {
+export const useOralStoryGeneratorStore = defineStore('oral-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
   const story = ref<IOralStory>({
     gradeLevel: Level.GRADE_4,

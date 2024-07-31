@@ -2,7 +2,9 @@
 import { defineStore } from 'pinia'
 import SampleStories from '@/data/sample.stories.json'
 import { ref } from 'vue'
-import type { Story, Level, TestType, ReadingMode } from './story.generator'
+// import type { Story, Level, TestType, ReadingMode } from ''
+import { Level, TestType, IOralStory, ReadingMode } from '@/services/types';
+
 
 export const useStoryStore = defineStore('story', () => {
   // import.meta.env.VITE_OPEN_AI_KEY
@@ -21,9 +23,9 @@ export const useStoryStore = defineStore('story', () => {
 
   const stories = ref(
     {
-      stories: SampleStories as unknown as Story[],
+      stories: SampleStories as unknown as IOralStory[],
       filters: {
-        level: 'Grade' as Level | 'Grade',
+        gradeLevel: 'Grade' as Level | 'Grade',
         testType: 'Type' as TestType | 'Type',
         readingMode: 'Mode' as ReadingMode | 'Mode',
         date: 'Date' as 'Newest' | 'Oldest' | 'Date',
@@ -32,13 +34,13 @@ export const useStoryStore = defineStore('story', () => {
     }
   )
 
-  const filteredStories = ref<Story[]>([]);
+  const filteredStories = ref<IOralStory[]>([]);
   function search() {
     let filtered = stories.value.stories;
 
     // Filter by level
-    if (!stories.value.filters.level.includes('Grade') && stories.value.filters.level) {
-      filtered = filtered.filter(story => story.level.trim().toLowerCase() === stories.value.filters.level.trim().toLowerCase());
+    if (!stories.value.filters.gradeLevel.includes('Grade') && stories.value.filters.gradeLevel) {
+      filtered = filtered.filter(story => story.gradeLevel.trim().toLowerCase() === stories.value.filters.gradeLevel.trim().toLowerCase());
     }
 
     // Filter by test type
