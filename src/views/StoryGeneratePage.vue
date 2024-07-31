@@ -2,7 +2,7 @@
   <MainLayout :is-loading="isLoading">
 
     <HeaderCover />
-    <div class="flex items-center m-5 rounded-lg justify-center">
+    <div class="flex items-center rounded-lg justify-center">
       <div class="join grid grid-cols-2">
         <button class="join-item btn btn-outline" @click="readingType = ReadingMode.ORAL_READING"
           :class="{ 'btn-active': readingType === ReadingMode.ORAL_READING }">Oral

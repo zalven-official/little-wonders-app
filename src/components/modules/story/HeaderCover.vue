@@ -1,5 +1,6 @@
 <template>
-  <div class="my-10 p-8 bg-white backdrop-blur-sm">
+  <div
+    :class="`card w-full bg-base-100 my-10 p-8 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value}`">
     <p class="font-bold text-lg text-center w-full flex items-center justify-center">
       <SparklesIcon class="w-5 mr-2 " /> Generate Phil Iri Story 12
     </p>
@@ -16,4 +17,12 @@
 
 <script setup lang="ts">
 import { SparklesIcon } from 'lucide-vue-next'
+import { useThemeStore } from '@/store/ui/theme.store'
+import { storeToRefs } from 'pinia';
+const themeStore = useThemeStore()
+const {
+  backgroundOpacity,
+  backgroundBlur,
+} = storeToRefs(themeStore)
+
 </script>
