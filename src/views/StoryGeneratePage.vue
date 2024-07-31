@@ -2,7 +2,7 @@
   <MainLayout :is-loading="isLoading">
     <div class="my-10 p-8 bg-white backdrop-blur-sm">
       <p class="font-bold text-lg text-center w-full flex items-center justify-center">
-        <SparklesIcon class="w-5 mr-2 " /> Generate Phil Iri Story 11
+        <SparklesIcon class="w-5 mr-2 " /> Generate Phil Iri Story 12
       </p>
       <p class="mt-5 text-xs text-center w-full">
         The Philippine Informal Reading Inventory (Phil-IRI) helps teachers assess students' reading skills. Our app
@@ -72,13 +72,25 @@
         <TipTapEditor v-model="story.title" :is-bionic="isBionic"></TipTapEditor>
         <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
         <TipTapEditor v-model="story.questions" :is-bionic="isBionic"></TipTapEditor>
+        <div class="avatar shadow-md rounded-lg" v-if="story.poster">
+          <div class="w-36 rounded-xl">
+            <img :src="story.poster" />
+          </div>
+        </div>
       </div>
+
 
       <div class="my-5">
         <button class="btn btn-primary my-4" type="button" @click="generateOralQuestionnaire"
           v-if="result?.story && !result?.questions">
           <SparklesIcon class="w-5" />
           Generate Questionnaire
+        </button>
+
+        <button class="btn btn-primary my-4" type="button" @click="generatePoster"
+          v-if="result?.story && result?.questions">
+          <SparklesIcon class="w-5" />
+          Generate Poster
         </button>
       </div>
 
@@ -88,9 +100,9 @@
           Save as Docx
         </button>
 
-        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory" disabled>
+        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
           <SaveIcon class="w-5" />
-          Save Story - Not yet available
+          Story
         </button>
       </div>
 
@@ -127,9 +139,6 @@ const isLoading = ref(false)
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
 
-// const generatedStory = computed(() => bionic.convert(
-//   `${result.value?.story}\n\n${result.value?.questions}`, isBionic.value
-// ))
 async function generateStory(): Promise<void> {
   isLoading.value = true
   try {
@@ -148,14 +157,24 @@ async function generateOralQuestionnaire(): Promise<void> {
     result.value = await storyGenerator.generateOralQuestionnaire()
     toast.success("Successfully generating the questionnaires")
   } catch (e) {
-    toast.error("Something Wrong Generating the questionnaired")
+    toast.error("Something Wrong Generating the questionnaires")
   } finally {
     isLoading.value = false
   }
 }
 
 
-
+async function generatePoster(): Promise<void> {
+  isLoading.value = true
+  try {
+    result.value = await storyGenerator.generatePoster()
+    toast.success("Successfully generating the poster")
+  } catch (e) {
+    toast.error(`Something Wrong Generating the poster ${e}`)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 
 

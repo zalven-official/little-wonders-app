@@ -14,7 +14,7 @@ export class OpenAIClient {
   private token: string
 
   // Available models: "gpt-4-1106-preview", "gpt-3.5-turbo-1106", or "davinci-codex"
-  private readonly CHAT_MODEL_NAME: string = 'gpt-3.5-turbo-0125'
+  private readonly CHAT_MODEL_NAME: string = 'gpt-3.5-turbo'
   private readonly VISUAL_MODEL_NAME: string = 'gpt-4o'
   private readonly IMAGE_GENERATION_MODEL_NAME: string = 'dall-e-2'
 
@@ -105,7 +105,10 @@ export class OpenAIClient {
     prompt: string = "a cartoonish about bed time story for kids in night theme",
     imageGenerationModelName = this.IMAGE_GENERATION_MODEL_NAME,
   ) {
-    const response = await this.client.images.generate({ model: `${imageGenerationModelName}`, prompt: prompt, n: 1, size: "1024x1024" });
+    const response = await this.client.images.generate({
+      model: `${imageGenerationModelName}`, prompt: prompt, n: 1, size: "256x256",
+      response_format: 'b64_json',
+    });
     return response.data;
   }
 

@@ -49,6 +49,9 @@ Create a questionnaire based on the content above. Make sure the format is just 
 Keep in mind that this only returns the content, not the description, title, or any placeholders. If there is a placeholder, just put any random input for it.`;
   }
 
+  function posterGeneratorPrompt() {
+    return `Based on these content create me a cartoonish or animated image based on the this "${story.value.title}" and ${story.value.description}.`
+  }
   async function generateOralStory(): Promise<IOralStory> {
     if (!story.value.title.trim() || !story.value.description.trim()) {
       throw Error("Title & Description are empty")
@@ -80,10 +83,17 @@ Keep in mind that this only returns the content, not the description, title, or 
 
     if (questionnareResult)
       story.value = { ...story.value, questions: questionnareResult }
-    console.log(questionnareResult)
     return story.value
   }
   async function generatePoster(): Promise<IOralStory> {
+    const prompt = posterGeneratorPrompt()
+    const image = await openai.generateImage(prompt)
+    const generatedPoster = `data:image/png;base64,${image[0].b64_json}`
+    console.log(image)
+
+    if (generatedPoster) {
+      story.value = { ...story.value, poster: generatedPoster }
+    }
     return story.value
   }
 

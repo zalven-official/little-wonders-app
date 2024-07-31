@@ -178,3 +178,15 @@ export function formatStringForFileName(input: string): string {
   const timestamp = Date.now();
   return `${formattedString}-${timestamp}`;
 }
+
+
+export async function urlToBase64(url: string): Promise<string> {
+  const response = await fetch(url, { mode: 'no-cors' });
+  const blob = await response.blob();
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
