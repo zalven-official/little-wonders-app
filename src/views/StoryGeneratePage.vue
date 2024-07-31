@@ -13,9 +13,9 @@
       </div>
     </div>
     <SilentStory @update:isLoading="handleIsLoadingUpdate" :is-loading="isLoading"
-      v-if="readingType === ReadingMode.ORAL_READING" />
-    <SilentStoryGenerator @update:isLoading="handleIsLoadingUpdate" :is-loading="isLoading"
       v-if="readingType === ReadingMode.SILENT_READING" />
+    <OralStory @update:isLoading="handleIsLoadingUpdate" :is-loading="isLoading"
+      v-if="readingType === ReadingMode.ORAL_READING" />
   </MainLayout>
 </template>
 
@@ -23,7 +23,7 @@
 import MainLayout from '@/components/layouts/MainLayout.vue';
 import HeaderCover from '@/components/modules/story/HeaderCover.vue'
 import SilentStory from '@/components/modules/story/SilentStory.vue'
-import SilentStoryGenerator from '@/components/modules/story/SilentStoryGenerator.vue'
+import OralStory from '@/components/modules/story/OralStory.vue'
 import { ReadingMode } from '@/services/types'
 import { ref } from 'vue';
 

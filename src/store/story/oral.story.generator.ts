@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { OpenAIClient } from '@/services';
-import { IOralStory, Level, TestType, ReadingMode } from '@/services/types';
+import { IStory, Level, TestType, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
 
 export const useOralStoryGeneratorStore = defineStore('silent-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
 
-  const story = ref<IOralStory>({
+  const story = ref<IStory>({
     gradeLevel: Level.GRADE_4,
     testType: TestType.POSTTEST,
     title: '',
