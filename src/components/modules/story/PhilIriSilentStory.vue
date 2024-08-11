@@ -22,7 +22,6 @@
         <select v-model="story.testType" class="select select-bordered w-full ">
           <option :value="TestType.PRETEST">Pre Test</option>
           <option :value="TestType.POSTTEST">Post Test</option>
-          <option :value="TestType.STORY">Story</option>
         </select>
       </label>
 
@@ -45,7 +44,12 @@
         <div class="capitalize"> <strong>Test type: </strong> {{ story.testType }}</div>
         <div class="capitalize"> <strong>Grade Level: </strong> {{ story.gradeLevel }}</div>
         <div class="capitalize"> <strong>Title: </strong>{{ story.title }}</div>
+        <div class="capitalize text-xs opacity-50"><strong>Number of words: </strong>
+          {{ numberOfWords }}
+        </div>
+
         <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
+        <strong>Questions: </strong>
         <TipTapEditor v-model="story.questions" :is-bionic="isBionic"></TipTapEditor>
       </div>
 
@@ -63,7 +67,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useThemeStore } from '@/store/ui/theme.store'
 import { toast } from 'vue3-toastify';
@@ -71,7 +75,7 @@ import { SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useSilentStoryGeneratorStore } from '@/store/story/index'
 import { Level, TestType } from '@/services/types';
 import { onMounted } from 'vue';
-import { exportFile, readableDateTime } from '@/lib';
+import { exportFile, readableDateTime, countWords } from '@/lib';
 import TipTapEditor from '@/components/global/TipTapEditor.vue';
 
 const themeStore = useThemeStore()
@@ -90,6 +94,8 @@ const silentStoryGenerator = useSilentStoryGeneratorStore()
 const generatedResult = ref<HTMLElement>()
 const isBionic = ref(false)
 const { story } = storeToRefs(silentStoryGenerator)
+
+const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = true

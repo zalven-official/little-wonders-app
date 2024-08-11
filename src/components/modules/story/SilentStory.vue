@@ -22,7 +22,6 @@
         <select v-model="story.testType" class="select select-bordered w-full ">
           <option :value="TestType.PRETEST">Pre Test</option>
           <option :value="TestType.POSTTEST">Post Test</option>
-          <option :value="TestType.STORY">Story</option>
         </select>
       </label>
       <label class="form-control w-full my-2">
@@ -60,15 +59,13 @@
         <div class="capitalize"> <strong>Test type: </strong> {{ story.testType }}</div>
         <div class="capitalize"> <strong>Grade Level: </strong> {{ story.gradeLevel }}</div>
         <div class="capitalize"> <strong>Title: </strong>{{ story.title }}</div>
-
-        <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
-        <TipTapEditor v-model="story.questions" :is-bionic="isBionic"></TipTapEditor>
-        <div class="avatar shadow-md rounded-lg" v-if="story.poster">
-          <div class="w-36 rounded-xl">
-            <img :src="story.poster" />
-          </div>
+        <div class="capitalize text-xs opacity-50"><strong>Number of words: </strong>
+          {{ numberOfWords }}
         </div>
 
+        <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
+        <strong>Questions: </strong>
+        <TipTapEditor v-model="story.questions" :is-bionic="isBionic"></TipTapEditor>
       </div>
 
       <div class="my-5">
@@ -110,8 +107,8 @@ import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generator';
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
-import { exportFile, readableDateTime } from '@/lib';
+import { ref, computed } from 'vue';
+import { exportFile, readableDateTime, countWords } from '@/lib';
 
 defineProps({
   isLoading: {
@@ -138,6 +135,7 @@ const { story } = storeToRefs(silentStoryGenerator)
 const result = ref<IStory>()
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
+const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = false

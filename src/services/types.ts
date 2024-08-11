@@ -8,7 +8,6 @@ export enum Level {
 export enum TestType {
   PRETEST = "Pre Test",
   POSTTEST = "Post Test",
-  STORY = "Story"
 }
 
 export enum ReadingMode {

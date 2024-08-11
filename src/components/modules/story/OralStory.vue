@@ -21,7 +21,6 @@
         <select v-model="story.testType" class="select select-bordered w-full ">
           <option :value="TestType.PRETEST">Pre Test</option>
           <option :value="TestType.POSTTEST">Post Test</option>
-          <option :value="TestType.STORY">Story</option>
         </select>
       </label>
 
@@ -69,16 +68,19 @@
         <div class="capitalize"> <strong>Grade Level: </strong> {{ story.gradeLevel }}</div>
         <div class="capitalize"> <strong>Prompt: </strong> {{ story.prompt }}</div>
         <div class="capitalize"> <strong>Title: </strong>{{ story.title }}</div>
+        <div class="capitalize text-xs opacity-50"><strong>Number of words: </strong>
+          {{ numberOfWords }}
+        </div>
 
         <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
 
-        <strong v-if="story.literalQuestions">Literal Questions </strong>
+        <strong>Literal Questions </strong>
         <TipTapEditor v-model="story.literalQuestions" :is-bionic="isBionic"></TipTapEditor>
 
-        <strong v-if="story.interpretiveQuestions">Interpretive Questions </strong>
+        <strong>Interpretive Questions </strong>
         <TipTapEditor v-model="story.interpretiveQuestions" :is-bionic="isBionic"></TipTapEditor>
 
-        <strong v-if="story.appliedQuestions">Applied Questions </strong>
+        <strong>Applied Questions </strong>
         <TipTapEditor v-model="story.appliedQuestions" :is-bionic="isBionic"></TipTapEditor>
 
         <div class="avatar shadow-md rounded-lg" v-if="story.poster">
@@ -138,8 +140,8 @@ import { storeToRefs } from 'pinia';
 import { IStory, Level, TestType } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { onMounted } from 'vue';
-import { ref } from 'vue';
-import { exportFile, readableDateTime } from '@/lib';
+import { ref, computed } from 'vue';
+import { exportFile, readableDateTime, countWords } from '@/lib';
 const themeStore = useThemeStore()
 
 defineProps({
@@ -166,6 +168,7 @@ const { story } = storeToRefs(oralStoryGenerator)
 const result = ref<IStory>()
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
+const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = false

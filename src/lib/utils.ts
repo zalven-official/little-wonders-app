@@ -229,3 +229,28 @@ export async function exportFile(value: HTMLElement, name: string): Promise<void
   await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
 
 }
+
+
+/**
+ * Counts the number of words in a given string after cleaning it.
+ * The function removes special characters and extra spaces, returning only the word count.
+ *
+ * @param {string} input - The string to be processed and counted.
+ * @returns {number} The number of words in the cleaned string.
+ *
+ * @example
+ * const text = "Hello, World! This is a test string.";
+ * console.log(countWords(text)); // Output: 6
+ *
+ * @example
+ * const text = "   Lots of    spaces and special $$$ characters!!!  ";
+ * console.log(countWords(text)); // Output: 6
+ */
+export function countWords(input: string): number {
+  const cleanedInput = input
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, ' ');
+  const words = cleanedInput.split(' ');
+  return words.filter(word => word.length > 0).length;
+}

@@ -21,7 +21,6 @@
         <select v-model="story.testType" class="select select-bordered w-full ">
           <option :value="TestType.PRETEST">Pre Test</option>
           <option :value="TestType.POSTTEST">Post Test</option>
-          <option :value="TestType.STORY">Story</option>
         </select>
       </label>
 
@@ -55,23 +54,21 @@
         <div class="capitalize"> <strong>Grade Level: </strong> {{ story.gradeLevel }}</div>
         <div class="capitalize"> <strong>Prompt: </strong> {{ story.prompt }}</div>
         <div class="capitalize"> <strong>Title: </strong>{{ story.title }}</div>
+        <div class="capitalize text-xs opacity-50"><strong>Number of words: </strong>
+          {{ numberOfWords }}
+        </div>
 
-        <TipTapEditor v-model="story.story" :is-bionic="isBionic" :editable="false"></TipTapEditor>
 
-        <strong v-if="story.literalQuestions">Literal Questions </strong>
+        <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
+
+        <strong>Literal Questions </strong>
         <TipTapEditor v-model="story.literalQuestions" :is-bionic="isBionic"></TipTapEditor>
 
-        <strong v-if="story.interpretiveQuestions">Interpretive Questions </strong>
+        <strong>Interpretive Questions </strong>
         <TipTapEditor v-model="story.interpretiveQuestions" :is-bionic="isBionic"></TipTapEditor>
 
-        <strong v-if="story.appliedQuestions">Applied Questions </strong>
+        <strong>Applied Questions </strong>
         <TipTapEditor v-model="story.appliedQuestions" :is-bionic="isBionic"></TipTapEditor>
-
-        <div class="avatar shadow-md rounded-lg" v-if="story.poster">
-          <div class="w-36 rounded-xl">
-            <img :src="story.poster" />
-          </div>
-        </div>
       </div>
 
 
@@ -97,8 +94,9 @@ import { toast } from 'vue3-toastify';
 import { SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { Level, TestType } from '@/services/types';
 import { useOralStoryGeneratorStore } from '@/store/story/index'
-import { exportFile, readableDateTime } from '@/lib';
-import { onMounted } from 'vue';
+import { exportFile, readableDateTime, countWords } from '@/lib';
+import { onMounted, computed } from 'vue';
+
 
 const themeStore = useThemeStore()
 const emit = defineEmits<{
@@ -114,6 +112,7 @@ const oralStoryGenerator = useOralStoryGeneratorStore()
 const generatedResult = ref<HTMLElement>()
 const { story } = storeToRefs(oralStoryGenerator)
 const isBionic = ref(false)
+const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = true

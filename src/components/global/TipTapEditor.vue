@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full max-w-3xl mx-auto my-8">
-    <editor-content :editor="editor" class="prose mx-auto markdown-body"></editor-content>
+  <div class="border rounded-lg py-2 my-3">
+    <editor-content :editor="editor" class="prose mx-auto markdown-body px-2"></editor-content>
   </div>
 </template>
 
