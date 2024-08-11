@@ -49,7 +49,7 @@
 
       <div ref="generatedResult">
         <div class="capitalize text-xs opacity-50"><strong>Date: </strong> {{ readableDateTime(story.published) }}</div>
-        <div class="capitalize"><strong>GENERATED ORAL STORY </strong></div>
+        <div class="capitalize"><strong>Phil-IRI ORAL STORY </strong></div>
         <div class="capitalize"> <strong>Test type: </strong> {{ story.testType }}</div>
         <div class="capitalize"> <strong>Grade Level: </strong> {{ story.gradeLevel }}</div>
         <div class="capitalize"> <strong>Prompt: </strong> {{ story.prompt }}</div>
