@@ -131,6 +131,7 @@ import { useOralStoryGeneratorStore } from '@/store/story/index'
 import { storeToRefs } from 'pinia';
 import { IStory, Level, TestType } from '@/services/types';
 import { toast } from 'vue3-toastify';
+import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { exportFile } from '@/lib';
 const themeStore = useThemeStore()
@@ -159,6 +160,10 @@ const { story } = storeToRefs(oralStoryGenerator)
 const result = ref<IStory>()
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
+
+onMounted(() => {
+  story.value.isPhilIri = false
+})
 
 
 async function generateStory(): Promise<void> {

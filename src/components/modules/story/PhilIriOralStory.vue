@@ -24,6 +24,8 @@ import { toast } from 'vue3-toastify';
 import { SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useOralStoryGeneratorStore } from '@/store/story/index'
 import { exportFile } from '@/lib';
+import { onMounted } from 'vue';
+
 const themeStore = useThemeStore()
 
 const emit = defineEmits<{
@@ -38,6 +40,11 @@ const {
 const oralStoryGenerator = useOralStoryGeneratorStore()
 const generatedResult = ref<HTMLElement>()
 const { story } = storeToRefs(oralStoryGenerator)
+
+onMounted(() => {
+  story.value.isPhilIri = true
+})
+
 
 // Export ---------------------------------------
 async function exportStory(): Promise<void> {

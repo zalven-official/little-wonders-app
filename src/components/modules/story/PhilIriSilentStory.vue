@@ -23,6 +23,7 @@ import { useThemeStore } from '@/store/ui/theme.store'
 import { toast } from 'vue3-toastify';
 import { SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useSilentStoryGeneratorStore } from '@/store/story/index'
+import { onMounted } from 'vue';
 import { exportFile } from '@/lib';
 const themeStore = useThemeStore()
 
@@ -38,6 +39,11 @@ const {
 const silentStoryGenerator = useSilentStoryGeneratorStore()
 const generatedResult = ref<HTMLElement>()
 const { story } = storeToRefs(silentStoryGenerator)
+
+onMounted(() => {
+  story.value.isPhilIri = true
+})
+
 
 // Export ---------------------------------------
 async function exportStory(): Promise<void> {

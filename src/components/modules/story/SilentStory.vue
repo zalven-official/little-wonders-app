@@ -103,7 +103,7 @@ import { Level, TestType, IStory } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generator';
-
+import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { exportFile } from '@/lib';
@@ -128,10 +128,15 @@ const {
   backgroundBlur,
 } = storeToRefs(themeStore)
 
+
 const { story } = storeToRefs(silentStoryGenerator)
 const result = ref<IStory>()
 const isBionic = ref(false)
 const generatedResult = ref<HTMLElement>()
+
+onMounted(() => {
+  story.value.isPhilIri = false
+})
 
 async function generateStory(): Promise<void> {
   emit('update:isLoading', true)
