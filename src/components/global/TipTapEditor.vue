@@ -1,18 +1,145 @@
 <template>
-  <div class="border rounded-lg py-2 my-3">
-    <editor-content :editor="editor" class="prose mx-auto markdown-body px-2"></editor-content>
+  <div>
+    <!-- Menu Bar -->
+    <div class="flex justify-center space-x-4 py-2 flex-wrap shadow group" v-if="editor && isActive"
+      @focus="isActive = true">
+
+      <!-- Text Styles -->
+      <button @click="editor?.chain().focus().toggleBold().run()" class="p-1 rounded-md"
+        :class="{ 'bg-base-300 text-base': editor.isActive('bold') }" type="button">
+        <BoldIcon class="w-3" />
+      </button>
+
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleItalic().run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('italic') }" type="button">
+        <ItalicIcon class="w-3" />
+      </button>
+
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleStrike().run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('strike') }" type="button">
+        <StrikethroughIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleUnderline().run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('underline') }" type="button">
+        <UnderlineIcon class="w-3" />
+      </button>
+
+      <!-- Headers -->
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('heading', { level: 1 }) }" type="button">
+        <Heading1Icon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('heading', { level: 2 }) }" type="button">
+        <Heading2Icon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('heading', { level: 3 }) }" type="button">
+        <Heading3Icon class="w-3" />
+      </button>
+
+      <!-- Lists -->
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleBulletList().run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('bulletList') }" type="button">
+        <ListIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().toggleOrderedList().run()"
+        :class="{ 'bg-base-300 text-base': editor.isActive('orderedList') }" type="button">
+        <ListOrderedIcon class="w-3" />
+      </button>
+
+      <div class="text-md h-full mt-1 opacity-40">|</div>
+      <!-- Table -->
+      <button class="p-1 rounded-md"
+        @click="editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()" type="button">
+        <Grid3X3Icon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().addColumnBefore().run()" type="button">
+        <PanelLeftIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().addColumnAfter().run()" type="button">
+        <PanelRightIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().deleteColumn().run()" type="button">
+        <BetweenVerticalEndIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().addRowBefore().run()" type="button">
+        <PanelTopIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().addRowAfter().run()" type="button">
+        <PanelBottomIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().deleteRow().run()" type="button">
+        <BetweenHorizonalEndIcon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().deleteTable().run()" type="button">
+        <Grid2x2XIcon class="w-3" />
+      </button>
+
+      <div class="text-md h-full mt-1 opacity-40">|</div>
+
+      <!-- Additional Features -->
+
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().undo().run()" type="button">
+        <Undo2Icon class="w-3" />
+      </button>
+      <button class="p-1 rounded-md" @click="editor?.chain().focus().redo().run()" type="button">
+        <Redo2Icon class="w-3" />
+      </button>
+    </div>
+
+
+    <!-- Editor Content -->
+    <div class="border rounded-lg py-2 my-3">
+      <editor-content :editor="editor" class="prose mx-auto markdown-body px-2" on></editor-content>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import {
+  BoldIcon,
+  ItalicIcon,
+  StrikethroughIcon,
+  UnderlineIcon,
+  Heading1Icon,
+  Heading2Icon,
+  Heading3Icon,
+  ListIcon,
+  ListOrderedIcon,
+  Grid3X3Icon,
+  PanelLeftIcon,
+  PanelRightIcon,
+  BetweenVerticalEndIcon,
+  PanelTopIcon,
+  PanelBottomIcon,
+  BetweenHorizonalEndIcon,
+  Grid2x2XIcon,
+  Undo2Icon,
+  Redo2Icon
+} from 'lucide-vue-next';
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Bold from '@tiptap/extension-bold'
+import Italic from '@tiptap/extension-italic'
+import Strike from '@tiptap/extension-strike'
+import Underline from '@tiptap/extension-underline'
+import Heading from '@tiptap/extension-heading'
+import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
+import Table from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import Highlight from '@tiptap/extension-highlight'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import HardBreak from '@tiptap/extension-hard-break'
 
-import { watch, onMounted } from 'vue'
+
+import { watch, onMounted, ref } from 'vue'
 import { marked } from 'marked'
 
 const props = defineProps({
@@ -40,16 +167,48 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
+const isActive = ref(false)
+const blurTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const editor = useEditor({
   extensions: [
     StarterKit,
+    Bold,
+    Italic,
+    Strike,
+    Underline,
+    Heading,
+    BulletList,
+    OrderedList,
+    Table.configure({
+      resizable: true,
+    }),
+    TableRow,
+    TableCell,
+    TableHeader,
+    Highlight,
     Document,
     Paragraph,
     Text,
-    Bold,
+    HorizontalRule,
+    HardBreak,
   ],
   content: '',
+  onFocus() {
+    if (blurTimeout.value) {
+      clearTimeout(blurTimeout.value)
+      blurTimeout.value = null
+    }
+    isActive.value = true
+  },
+  onBlur({ event }) {
+    blurTimeout.value = setTimeout(() => {
+      const target = event.relatedTarget as HTMLElement | null
+      if (!target || !target.closest('.menu-bar')) {
+        isActive.value = false
+      }
+    }, 100)
+  },
 })
 
 const convertMarkdownToHtml = (markdown: string) => {

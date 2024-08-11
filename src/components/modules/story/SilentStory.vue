@@ -50,7 +50,7 @@
       :class="` card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 p-5 overflow-y-auto`">
       <div class="shadow flex items-center m-5 rounded-lg">
         <input type="checkbox" class="m-2 toggle toggle-success" v-model="isBionic" />
-        <p class="m-2 text-sm">{{ !isBionic ? 'Convert to Bionic' : 'Normal' }}</p>
+        <p class="m-2 text-sm">{{ !isBionic ? 'Convert to Bionic' : 'Back to Normal' }}</p>
       </div>
 
       <div ref="generatedResult">

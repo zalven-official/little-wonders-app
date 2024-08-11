@@ -35,7 +35,7 @@
 
       <div class="shadow flex items-center m-5 rounded-lg">
         <input type="checkbox" class="m-2 toggle toggle-success" v-model="isBionic" />
-        <p class="m-2 text-sm">{{ !isBionic ? 'Convert to Bionic' : 'Normal' }}</p>
+        <p class="m-2 text-sm">{{ !isBionic ? 'Convert to Bionic' : 'Back to Normal' }}</p>
       </div>
 
       <div ref="generatedResult">

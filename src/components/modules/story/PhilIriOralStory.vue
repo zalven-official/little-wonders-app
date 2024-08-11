@@ -42,7 +42,7 @@
 
 
       <div class="shadow flex items-center m-5 rounded-lg">
-        <p class="m-2 text-sm">{{ !isBionic ? 'Convert to Bionics' : 'Normal' }}</p>
+        <p class="m-2 text-sm">{{ !isBionic ? 'Convert to Bionics' : 'Back to Normal' }}</p>
         <input type="checkbox" class="m-2 toggle toggle-success" v-model="isBionic" />
       </div>
 
