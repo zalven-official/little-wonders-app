@@ -86,9 +86,9 @@
           Save as Docx
         </button>
 
-        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
+        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory" disabled>
           <SaveIcon class="w-5" />
-          Story
+          Story - Maintenance
         </button>
       </div>
 
@@ -181,7 +181,7 @@ async function exportStory(): Promise<void> {
       toast.success("Successfully exporting the story")
     }
   } catch (e) {
-    toast.error(`Something Wrong Exporting the Story ${e}`)
+    toast.error(`Something Wrong Exporting the Story ${JSON.stringify(e)}`)
   } finally {
     emit('update:isLoading', false)
   }

@@ -206,14 +206,16 @@ export async function exportFile(value: HTMLElement, name: string): Promise<void
   const pageHeight = 295;
   const imgHeight = (canvas.height * imgWidth) / canvas.width;
   let heightLeft = imgHeight;
-  let position = 10;
+  let position = 0;
 
+  // Add first page
   doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
   heightLeft -= pageHeight;
 
-  while (heightLeft >= 0) {
-    position = heightLeft - imgHeight;
+  // Add subsequent pages
+  while (heightLeft > 0) {
     doc.addPage();
+    position = heightLeft - imgHeight;
     doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
   }
@@ -221,6 +223,7 @@ export async function exportFile(value: HTMLElement, name: string): Promise<void
   const pdfOutput = doc.output('arraybuffer');
 
   const fileName = `${formatStringForFileName(name)}.pdf`;
+
   await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
 
   await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");

@@ -12,6 +12,7 @@ export const useSilentStoryGeneratorStore = defineStore('silent-story-generator'
     testType: TestType.POSTTEST,
     title: '',
     description: '',
+    isPhilIri: false,
 
     published: new Date(),
     content: '',

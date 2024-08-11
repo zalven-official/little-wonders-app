@@ -16,13 +16,14 @@ export enum ReadingMode {
   SILENT_READING = 'Silent reading'
 }
 
-interface IBaseOralStory {
+interface IBaseStory {
   gradeLevel: Level;
   testType: TestType;
   description: string;
   title: string;
   published: Date;
   readingMode: ReadingMode;
+  isPhilIri: boolean
 
   content: string;
   story: string;
@@ -30,7 +31,7 @@ interface IBaseOralStory {
   poster: string;
 }
 
-interface IOralStoryOral extends IBaseOralStory {
+interface IOralStoryOral extends IBaseStory {
   readingMode: ReadingMode.ORAL_READING;
   prompt: string;
   literalQuestions: string
@@ -38,7 +39,7 @@ interface IOralStoryOral extends IBaseOralStory {
   appliedQuestions: string
 }
 
-interface ISilentStory extends IBaseOralStory {
+interface ISilentStory extends IBaseStory {
   readingMode: ReadingMode.SILENT_READING;
   prompt?: never;
   literalQuestions?: never

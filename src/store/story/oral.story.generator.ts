@@ -11,6 +11,7 @@ export const useOralStoryGeneratorStore = defineStore('oral-story-generator', ()
     testType: TestType.POSTTEST,
     title: '',
     description: '',
+    isPhilIri: false,
 
     published: new Date(),
     content: '',
