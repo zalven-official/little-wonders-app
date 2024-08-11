@@ -43,6 +43,7 @@
     "@types/crypto-js": "^4.2.2",
     "@types/html2canvas": "^1.0.0",
     "@types/jspdf": "^2.0.0",
+    "axios": "^1.7.3",
     "capacitor-blob-writer": "^1.1.17",
     "cordova-plugin-advanced-http": "^3.3.1",
     "cordova-plugin-file": "^8.1.0",
