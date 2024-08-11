@@ -118,9 +118,9 @@
           Save as Docx
         </button>
 
-        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
+        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory" disabled>
           <SaveIcon class="w-5" />
-          Save Story
+          Save Story - Maintenance
         </button>
       </div>
 
