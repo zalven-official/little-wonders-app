@@ -109,10 +109,7 @@
           Generate Applied Questionnaire
         </button>
 
-        <button class="btn btn-primary my-4" type="button" @click="generatePoster" v-if="result?.story">
-          <SparklesIcon class="w-5" />
-          Generate Poster
-        </button>
+
       </div>
 
       <div class="mt-14">
@@ -121,9 +118,9 @@
           Save as Docx
         </button>
 
-        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory" disabled>
+        <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
           <SaveIcon class="w-5" />
-          Story - Maintenance
+          Save Story
         </button>
       </div>
 
@@ -223,17 +220,17 @@ async function generateAppliedQuestions(): Promise<void> {
   }
 }
 
-async function generatePoster(): Promise<void> {
-  emit('update:isLoading', true)
-  try {
-    result.value = await oralStoryGenerator.generatePoster()
-    toast.success("Successfully generating the poster")
-  } catch (e) {
-    toast.error(`Something Wrong Generating the poster ${e}`)
-  } finally {
-    emit('update:isLoading', false)
-  }
-}
+// async function generatePoster(): Promise<void> {
+//   emit('update:isLoading', true)
+//   try {
+//     result.value = await oralStoryGenerator.generatePoster()
+//     toast.success("Successfully generating the poster")
+//   } catch (e) {
+//     toast.error(`Something Wrong Generating the poster ${e}`)
+//   } finally {
+//     emit('update:isLoading', false)
+//   }
+// }
 
 // Export ---------------------------------------
 async function exportStory(): Promise<void> {

@@ -77,9 +77,9 @@
         Save as Docx
       </button>
 
-      <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory" disabled>
+      <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
         <SaveIcon class="w-5" />
-        Story - Maintenance
+        Save Story
       </button>
 
     </form>

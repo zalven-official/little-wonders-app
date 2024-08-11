@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { OpenAIClient } from '@/services';
 import { IStory, Level, TestType, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
+import { createStory } from '@/services/story.service';
 
 export const useOralStoryGeneratorStore = defineStore('oral-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
@@ -146,7 +147,7 @@ Please provide an answer, or a different possible answer but connected to the co
   }
 
   async function saveStory(): Promise<void> {
-    console.log("helo")
+    createStory(story.value)
   }
 
   return {

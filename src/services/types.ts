@@ -16,6 +16,7 @@ export enum ReadingMode {
 }
 
 interface IBaseStory {
+  id?: string,
   gradeLevel: Level;
   testType: TestType;
   description: string;

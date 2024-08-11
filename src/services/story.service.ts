@@ -3,8 +3,6 @@ import axios from 'axios';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-
-
 export const createStory = async (newStory: IStory): Promise<IStory | undefined> => {
   try {
     const response = await axios.post<IStory>(`${serverUrl}/api/stories`, newStory);

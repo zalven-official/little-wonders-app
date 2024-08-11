@@ -4,6 +4,7 @@ import { Level, TestType, IStory, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
 
 import { OpenAIClient } from '@/services';
+import { createStory } from '@/services/story.service';
 
 export const useSilentStoryGeneratorStore = defineStore('silent-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
@@ -95,7 +96,8 @@ Keep in mind that this only returns the content, not the description, title, or 
   }
 
   async function saveStory(): Promise<void> {
-    console.log("helo")
+    const response = await createStory(story.value)
+    console.log(response)
   }
 
   return {
