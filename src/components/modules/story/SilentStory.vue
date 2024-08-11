@@ -55,7 +55,12 @@
       </div>
 
       <div ref="generatedResult">
-        <TipTapEditor v-model="story.title" :is-bionic="isBionic"></TipTapEditor>
+        <div class="capitalize text-xs opacity-50"><strong>Date: </strong> {{ readableDateTime(story.published) }}</div>
+        <div class="capitalize"><strong>GENERATED SILENT STORY </strong></div>
+        <div class="capitalize"> <strong>Test type: </strong> {{ story.testType }}</div>
+        <div class="capitalize"> <strong>Grade Level: </strong> {{ story.gradeLevel }}</div>
+        <div class="capitalize"> <strong>Title: </strong>{{ story.title }}</div>
+
         <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
         <TipTapEditor v-model="story.questions" :is-bionic="isBionic"></TipTapEditor>
         <div class="avatar shadow-md rounded-lg" v-if="story.poster">
@@ -63,8 +68,8 @@
             <img :src="story.poster" />
           </div>
         </div>
-      </div>
 
+      </div>
 
       <div class="my-5">
         <button class="btn btn-primary my-4" type="button" @click="generateSilentQuestionnaire"
@@ -106,7 +111,7 @@ import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generat
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import { exportFile } from '@/lib';
+import { exportFile, readableDateTime } from '@/lib';
 
 defineProps({
   isLoading: {

@@ -21,6 +21,21 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false
+  },
+  editable: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+  startString: {
+    type: String,
+    required: false,
+    default: ''
+  },
+  endString: {
+    type: String,
+    required: false,
+    default: ''
   }
 })
 
@@ -52,15 +67,16 @@ watch(() => props.modelValue, (newValue) => {
 watch(editor, (newEditor) => {
   if (newEditor) {
     newEditor.on('update', () => {
-      emit('update:modelValue', newEditor.getHTML())
+      if (props.editable)
+        emit('update:modelValue', newEditor.getHTML())
     })
   }
-}, { immediate: true })
+}, { immediate: false })
 
-onMounted(() => {
+onMounted(async () => {
   if (editor.value && props.modelValue) {
-    const htmlContent = convertMarkdownToHtml(props.modelValue)
-    editor.value.commands.setContent(htmlContent, false)
+    const htmlContent = await convertMarkdownToHtml(props.modelValue)
+    editor.value.commands.setContent(`<span>${props.startString}</span>${htmlContent}<span>${props.endString}</span>`, false)
     applyTextFormatting()
   }
 })

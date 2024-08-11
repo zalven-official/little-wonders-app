@@ -63,7 +63,13 @@
       </div>
 
       <div ref="generatedResult">
-        <TipTapEditor v-model="story.title" :is-bionic="isBionic"></TipTapEditor>
+        <div class="capitalize text-xs opacity-50"><strong>Date: </strong> {{ readableDateTime(story.published) }}</div>
+        <div class="capitalize"><strong>GENERATED ORAL STORY </strong></div>
+        <div class="capitalize"> <strong>Test type: </strong> {{ story.testType }}</div>
+        <div class="capitalize"> <strong>Grade Level: </strong> {{ story.gradeLevel }}</div>
+        <div class="capitalize"> <strong>Prompt: </strong> {{ story.prompt }}</div>
+        <div class="capitalize"> <strong>Title: </strong>{{ story.title }}</div>
+
         <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
 
         <strong v-if="story.literalQuestions">Literal Questions </strong>
@@ -133,7 +139,7 @@ import { IStory, Level, TestType } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
-import { exportFile } from '@/lib';
+import { exportFile, readableDateTime } from '@/lib';
 const themeStore = useThemeStore()
 
 defineProps({
