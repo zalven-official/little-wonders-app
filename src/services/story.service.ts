@@ -1,8 +1,6 @@
 import { IStory } from "./types";
-import axios from 'axios';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
-
 
 export interface FetchStoriesParams {
   gradeLevel?: string;
@@ -15,9 +13,20 @@ export interface FetchStoriesParams {
 
 export const createStory = async (newStory: IStory): Promise<IStory | undefined> => {
   try {
-    newStory.title = newStory.title.toLowerCase().trim()
-    const response = await axios.post<IStory>(`${serverUrl}/api/stories`, newStory);
-    return response.data;
+    newStory.title = newStory.title.toLowerCase().trim();
+    const response = await fetch(`${serverUrl}/api/stories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newStory),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create story');
+    }
+
+    return await response.json();
   } catch (error) {
     console.error('Failed to create story', error);
     return undefined;
@@ -34,18 +43,29 @@ export const fetchStories = async (params?: FetchStoriesParams): Promise<IStory[
     if (params?.isPhilIri !== undefined) queryParams.append('isPhilIri', params.isPhilIri.toString());
     if (params?.sort) queryParams.append('sort', params.sort);
     if (params?.title) queryParams.append('title', params.title);
-    const response = await axios.get<IStory[]>(`${serverUrl}/api/stories?${queryParams.toString()}`);
-    return response.data;
+
+    const response = await fetch(`${serverUrl}/api/stories?${queryParams.toString()}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch stories');
+    }
+
+    return await response.json();
   } catch (error) {
+    alert(error);
     console.error('Failed to fetch stories', error);
   }
 };
 
-// Get a story by ID
 export const fetchStoryById = async (id: string): Promise<IStory | undefined> => {
   try {
-    const response = await axios.get<IStory>(`${serverUrl}/api/stories/${id}`);
-    return response.data;
+    const response = await fetch(`${serverUrl}/api/stories/${id}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch story');
+    }
+
+    return await response.json();
   } catch (error) {
     console.error('Failed to fetch story', error);
   }
@@ -53,22 +73,36 @@ export const fetchStoryById = async (id: string): Promise<IStory | undefined> =>
 
 export const updateStory = async (id: string, updatedStory: IStory) => {
   try {
-    await axios.put(`${serverUrl}/api/stories/${id}`, updatedStory);
+    const response = await fetch(`${serverUrl}/api/stories/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedStory),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update story');
+    }
   } catch (error) {
     console.error('Failed to update story', error);
   }
 };
 
-// Delete a story
 export const deleteStory = async (id: string) => {
   try {
-    await axios.delete(`${serverUrl}/api/stories/${id}`);
+    const response = await fetch(`${serverUrl}/api/stories/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete story');
+    }
   } catch (error) {
     console.error('Failed to delete story', error);
   }
 };
 
-// Filter story
 export const fetchFilteredStories = async (filters: {
   gradeLevel?: string;
   testType?: string;
@@ -77,17 +111,28 @@ export const fetchFilteredStories = async (filters: {
   search?: string;
 }): Promise<IStory[] | undefined> => {
   try {
-    const response = await axios.get<IStory[]>(`${serverUrl}/api/stories`, {
-      params: {
-        gradeLevel: filters.gradeLevel,
-        testType: filters.testType,
-        readingMode: filters.readingMode,
-        date: filters.date,
-        search: filters.search,
+    const response = await fetch(`${serverUrl}/api/stories`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      // Construct query params manually
+      body: new URLSearchParams({
+        gradeLevel: filters.gradeLevel ?? '',
+        testType: filters.testType ?? '',
+        readingMode: filters.readingMode ?? '',
+        date: filters.date ?? '',
+        search: filters.search ?? '',
+      }).toString(),
     });
-    return response.data;
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch filtered stories');
+    }
+
+    return await response.json();
   } catch (err) {
-    return undefined
+    console.error('Failed to fetch filtered stories', err);
+    return undefined;
   }
-}
+};

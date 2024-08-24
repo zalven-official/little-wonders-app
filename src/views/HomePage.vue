@@ -3,6 +3,7 @@
     <button class="btn btn-primary m-5 shadow btn-sm" @click="navigateToStoryGenerator">
       <PlusIcon class="w-5" /> Add Story
     </button>
+    --{{ serverUrl }}--
     <div class="flex flex-col p-5 items-center justify-center">
       <div class="mb-10">
         <div class="bg-base-100 join w-full mb-2">
@@ -50,7 +51,7 @@
         </div>
       </div>
 
-
+      {{ storyStore.stories.stories }}
       <div v-for="(value, index) in storyStore.stories.stories" :key="index"
         :class="`flex flex-row card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 h-48 min-h-48`">
         <img :src="value.poster" class="w-40 h-40 rounded-md p-3 shadow-sm">
@@ -92,17 +93,21 @@ import { ref } from 'vue'
 const ionRouter = useIonRouter();
 const storyStore = useStoryStore()
 const themeStore = useThemeStore()
+
 const { stories } = storeToRefs(storyStore)
 
+
+const serverUrl = ref(import.meta.env.VITE_SERVER_URL);
 const isLoading = ref(false)
 const {
   backgroundOpacity,
   backgroundBlur,
 } = storeToRefs(themeStore)
 
-onMounted(async () => {
-  await storyStore.search()
+onMounted(() => {
+  search()
 })
+
 
 async function search() {
   isLoading.value = true
