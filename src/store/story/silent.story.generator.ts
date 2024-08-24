@@ -19,7 +19,7 @@ export const useSilentStoryGeneratorStore = defineStore('silent-story-generator'
     content: '',
     story: '',
     questions: '',
-    poster: '',
+    poster: 'https://cdn.discordapp.com/attachments/1217818054742900787/1276767207061327882/preschool_learning_center_1.png?ex=66cab99f&is=66c9681f&hm=4fd7de949a88560265772928317328e1c2b042eef8d1ec3a27addd8f2f1011f0&',
     readingMode: ReadingMode.SILENT_READING
   })
 
@@ -60,7 +60,7 @@ Keep in mind that this only returns the content, not the description, title, or 
       { "role": "user", "content": prompt },
     ])
     if (storyResult)
-      story.value = { ...story.value, story: storyResult, content: content(), questions: '', poster: '' }
+      story.value = { ...story.value, story: storyResult, content: content(), questions: '' }
     return story.value
   }
 
