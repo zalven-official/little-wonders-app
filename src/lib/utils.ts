@@ -128,6 +128,7 @@ export function stringToHash(inputString: string): string {
  * @returns {string} A formatted date and time string in English readable format.
  */
 export function readableDateTime(dateTime: Date): string {
+  dateTime = new Date(dateTime)
   const formattedDateTime = dateTime.toLocaleString(undefined, {
     year: "numeric",
     month: "long",
