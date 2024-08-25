@@ -242,16 +242,15 @@ const replaceUnsupportedColors = (element: HTMLElement) => {
   });
 };
 
-
 export async function exportFile(value: HTMLElement, name: string): Promise<void> {
   try {
-    replaceUnsupportedColors(value); // Replace unsupported colors
+    replaceUnsupportedColors(value);
 
     const canvas = await html2canvas(value, {
-      scale: 2,
+      scale: 1, // Lower scale to reduce memory usage
       useCORS: true,
       logging: true,
-      allowTaint: true,
+      allowTaint: false, // Prefer false for better performance if not using cross-origin resources
       windowWidth: value.scrollWidth,
       windowHeight: value.scrollHeight,
     });
@@ -276,8 +275,8 @@ export async function exportFile(value: HTMLElement, name: string): Promise<void
 
     // Add subsequent pages
     while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
       pdf.addPage();
+      position -= pageHeight; // Ensure the right position
       pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
     }
@@ -289,11 +288,10 @@ export async function exportFile(value: HTMLElement, name: string): Promise<void
     await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
 
   } catch (error) {
-    alert(error);
+    alert("An error occurred while exporting the PDF: " + error);
     console.error("An error occurred while exporting the PDF:", error);
   }
 }
-
 
 /**
  * Counts the number of words in a given string after cleaning it.
