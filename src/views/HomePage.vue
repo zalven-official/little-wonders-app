@@ -55,7 +55,16 @@
 
       <div v-for="(value, index) in storyStore.stories.stories" :key="index" @click="handleClick(value.id)"
         :class="`flex flex-row card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 h-48 min-h-48`">
-        <img :src="value.poster" class="w-40 h-40 rounded-md p-3 shadow-md">
+
+
+        <div class="flex justify-center items-center m-2 ">
+          <div class="avatar placeholder rounded-xl p-3 bg-base-100 shadow">
+            <div class="w-32 rounded-xl">
+              <img :src="value.poster" />
+            </div>
+          </div>
+        </div>
+
         <div class="p-3">
           <p class="text-sm font-semibold capitalize">{{ value.title }}</p>
           <p class="text-xs mt-2">{{ value.description }}</p>
