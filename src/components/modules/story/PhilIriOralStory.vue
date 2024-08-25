@@ -92,6 +92,9 @@
         {{ !story.id ? 'Save Story' : 'Update Story' }}
       </button>
 
+      <button type="button" class="btn btn-error btn-sm mt-10 btn-outline" @click="deleteStory()" v-if="story.id">
+        Delete Story
+      </button>
     </form>
   </div>
 </template>
@@ -172,5 +175,16 @@ function handleFileChange(event: Event) {
 }
 
 
+async function deleteStory(): Promise<void> {
+  emit('update:isLoading', true)
+  try {
+    await oralStoryGenerator.deleteStory()
+    toast.success("Successfully deleting the story")
+  } catch (e) {
+    toast.error("Something Wrong deleting the Story")
+  } finally {
+    emit('update:isLoading', false)
+  }
+}
 
 </script>

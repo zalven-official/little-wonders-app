@@ -4,7 +4,7 @@ import { Level, TestType, IStory, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
 
 import { OpenAIClient } from '@/services';
-import { createStory, updateStory } from '@/services/story.service';
+import { createStory, updateStory, destroyStory } from '@/services/story.service';
 import { useIonRouter } from '@ionic/vue';
 
 import thumbnail from '@/assets/thumbnail.png'
@@ -114,6 +114,13 @@ Keep in mind that this only returns the content, not the description, title, or 
     }
   }
 
+  async function deleteStory(): Promise<void> {
+    if (story.value?.id) {
+      await destroyStory(story.value.id)
+      ionRouter.navigate('/', 'forward', 'replace');
+    }
+  }
+
   return {
     story,
     _normalState,
@@ -121,6 +128,7 @@ Keep in mind that this only returns the content, not the description, title, or 
     generateSilentQuestionnaire,
     generatePoster,
     saveStory,
+    deleteStory
   }
 })
 

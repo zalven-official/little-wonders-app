@@ -91,7 +91,7 @@ export const updateStory = async (id: string, updatedStory: IStory) => {
   }
 };
 
-export const deleteStory = async (id: string) => {
+export const destroyStory = async (id: string) => {
   try {
     const response = await fetch(`${serverUrl}/api/stories/${id}`, {
       method: 'DELETE',

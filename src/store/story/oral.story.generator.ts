@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { OpenAIClient } from '@/services';
 import { IStory, Level, TestType, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
-import { createStory, updateStory } from '@/services/story.service';
+import { createStory, updateStory, destroyStory } from '@/services/story.service';
 
 import thumbnail from '@/assets/thumbnail.png'
 import { useIonRouter } from '@ionic/vue';
@@ -163,6 +163,13 @@ Please provide an answer, or a different possible answer but connected to the co
     }
   }
 
+  async function deleteStory(): Promise<void> {
+    if (story.value?.id) {
+      await destroyStory(story.value.id)
+      ionRouter.navigate('/', 'forward', 'replace');
+    }
+  }
+
   return {
     story,
     _normalState,
@@ -171,7 +178,8 @@ Please provide an answer, or a different possible answer but connected to the co
     generateInterpretiveQuestions,
     generateAppliedQuestions,
     generatePoster,
-    saveStory
+    saveStory,
+    deleteStory
   }
 
 })
