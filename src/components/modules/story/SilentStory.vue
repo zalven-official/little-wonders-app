@@ -93,7 +93,7 @@
       <div class="mt-14">
         <button class="btn btn-outline btn-primary my-2 w-full" type="button" @click="exportStory">
           <DownloadIcon class="w-5" />
-          Save as Docx
+          Save as Pdf
         </button>
 
         <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
@@ -102,9 +102,14 @@
         </button>
 
 
-        <button type="button" class="btn btn-error btn-sm mt-10 btn-outline" @click="deleteStory()" v-if="story.id">
-          Delete Story
-        </button>
+        <div class="flex justify-between" v-if="story.id">
+          <button type="button" class="btn btn-info btn-sm mt-10 btn-outline" @click="goback()">
+            Go Back
+          </button>
+          <button type="button" class="btn btn-error btn-sm mt-10 btn-outline" @click="deleteStory()">
+            Delete Story
+          </button>
+        </div>
       </div>
 
     </div>
@@ -122,6 +127,7 @@ import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ref, computed, onUnmounted } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
+import { useIonRouter } from '@ionic/vue';
 
 defineProps({
   isLoading: {
@@ -137,6 +143,7 @@ const emit = defineEmits<{
 const silentStoryGenerator = useSilentStoryGeneratorStore()
 
 const themeStore = useThemeStore()
+const ionRouter = useIonRouter();
 
 const {
   backgroundOpacity,
@@ -238,6 +245,10 @@ async function deleteStory(): Promise<void> {
   } finally {
     emit('update:isLoading', false)
   }
+}
+
+function goback() {
+  ionRouter.navigate('/', 'forward', 'replace');
 }
 
 </script>

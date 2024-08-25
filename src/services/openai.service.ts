@@ -14,7 +14,7 @@ export class OpenAIClient {
   private token: string
 
   // Available models: "gpt-4-1106-preview", "gpt-3.5-turbo-1106", or "davinci-codex"
-  private readonly CHAT_MODEL_NAME: string = 'gpt-3.5-turbo'
+  private readonly CHAT_MODEL_NAME: string = 'gpt-4o-mini'
   private readonly VISUAL_MODEL_NAME: string = 'gpt-4o'
   private readonly IMAGE_GENERATION_MODEL_NAME: string = 'dall-e-2'
 

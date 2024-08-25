@@ -70,7 +70,7 @@
 
       <button class="btn btn-outline btn-primary my-2 w-full" type="button" @click="exportStory">
         <DownloadIcon class="w-5" />
-        Save as Docx
+        Save as Pdf
       </button>
 
       <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
@@ -78,9 +78,14 @@
         {{ !story.id ? 'Save Story' : 'Update Story' }}
       </button>
 
-      <button type="button" class="btn btn-error btn-sm mt-10 btn-outline" @click="deleteStory()" v-if="story.id">
-        Delete Story
-      </button>
+      <div class="flex justify-between" v-if="story.id">
+        <button type="button" class="btn btn-info btn-sm mt-10 btn-outline" @click="goback()">
+          Go Back
+        </button>
+        <button type="button" class="btn btn-error btn-sm mt-10 btn-outline" @click="deleteStory()">
+          Delete Story
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -95,8 +100,10 @@ import { defaultPoster, Level, TestType } from '@/services/types';
 import { onMounted, onUnmounted } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
 import TipTapEditor from '@/components/global/TipTapEditor.vue';
+import { useIonRouter } from '@ionic/vue';
 
 const themeStore = useThemeStore()
+const ionRouter = useIonRouter();
 
 const emit = defineEmits<{
   (e: 'update:isLoading', value: boolean): void;
@@ -179,6 +186,10 @@ async function deleteStory(): Promise<void> {
   } finally {
     emit('update:isLoading', false)
   }
+}
+
+function goback() {
+  ionRouter.navigate('/', 'forward', 'replace');
 }
 
 </script>

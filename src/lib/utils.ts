@@ -1,8 +1,9 @@
 import CryptoJS from "crypto-js"
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
-import axios from "axios";
-const serverUrl = import.meta.env.VITE_SERVER_URL;
+import html2canvas from 'html2canvas-pro'
+import jsPDF from 'jspdf';
+
 
 /**
  * Generates a fallback name based on the provided full name.
@@ -196,30 +197,100 @@ export async function urlToBase64(url: string): Promise<string> {
   });
 }
 
+
+const replaceUnsupportedColors = (element: HTMLElement) => {
+  const allElements = element.querySelectorAll('*');
+
+  allElements.forEach(el => {
+    const htmlEl = el as HTMLElement;
+    const style = getComputedStyle(htmlEl);
+
+    const colorProperties = [
+      'color',
+      'backgroundColor',
+      'borderColor',
+      'outlineColor',
+      'boxShadow',
+      'textShadow',
+      'backgroundImage',
+    ];
+
+    colorProperties.forEach(property => {
+      const value = style.getPropertyValue(property);
+
+      // Check for unsupported color functions
+      if (value.includes('oklch') || value.includes('lab')) {
+        switch (property) {
+          case 'color':
+          case 'borderColor':
+          case 'outlineColor':
+          case 'textShadow':
+            htmlEl.style.setProperty(property, '#000000');
+            break;
+          case 'backgroundColor':
+            htmlEl.style.setProperty(property, '#ffffff');
+            break;
+          case 'backgroundImage':
+            htmlEl.style.setProperty(property, 'none');
+            break;
+          case 'boxShadow':
+            htmlEl.style.setProperty(property, 'none');
+            break;
+        }
+      }
+    });
+  });
+};
+
+
 export async function exportFile(value: HTMLElement, name: string): Promise<void> {
-
   try {
+    replaceUnsupportedColors(value); // Replace unsupported colors
 
-    // Create a FormData object to send HTML content and name
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('htmlContent', value as unknown as string); // Send as HTML content
-
-    const response = await axios.post(`${serverUrl}/api/export/download-pdf`, formData, {
-      responseType: 'arraybuffer', // Important for binary data
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    const canvas = await html2canvas(value, {
+      scale: 2,
+      useCORS: true,
+      logging: true,
+      allowTaint: true,
+      windowWidth: value.scrollWidth,
+      windowHeight: value.scrollHeight,
     });
 
-    // Save the PDF file locally
-    const fileName = `${formatStringForFileName(name)}.pdf`;
-    await File.writeFile(File.externalRootDirectory + "/Download", fileName, response.data, { replace: true });
+    const imgData = canvas.toDataURL("image/PNG");
 
+    const pdf = new jsPDF({
+      orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const imgWidth = pdf.internal.pageSize.getWidth() - 20;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    // Add first page
+    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    // Add subsequent pages
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    const pdfOutput = pdf.output('arraybuffer');
+    const fileName = `${formatStringForFileName(name)}.pdf`;
+
+    await File.writeFile(File.externalRootDirectory + "/Download", fileName, pdfOutput, { replace: true });
     await FileOpener.open(File.externalRootDirectory + "/Download/" + fileName, "application/pdf");
 
   } catch (error) {
-    console.error('Error exporting file:', error);
+    alert(error);
+    console.error("An error occurred while exporting the PDF:", error);
   }
 }
 
@@ -248,3 +319,4 @@ export function countWords(input?: string): number {
   const words = cleanedInput.split(' ');
   return words.filter(word => word.length > 0).length;
 }
+
