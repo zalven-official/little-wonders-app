@@ -16,18 +16,17 @@ const routes: Array<RouteRecordRaw> = [
     component: HomePage
   },
   {
-    path: '/story-generated/:id',
+    path: '/story-generated/:id?',
     name: 'story-generated',
     component: StoryGeneratePage,
-    props: true
+    props: true // Allows route params to be passed as props to the component
   },
   {
     path: '/theme',
     name: 'theme',
     component: ThemePage
   }
-]
-
+];
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes

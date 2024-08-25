@@ -4,13 +4,15 @@ import { Level, TestType, IStory, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
 
 import { OpenAIClient } from '@/services';
-import { createStory } from '@/services/story.service';
+import { createStory, updateStory } from '@/services/story.service';
+import { useIonRouter } from '@ionic/vue';
 
 import thumbnail from '@/assets/thumbnail.png'
 
 export const useSilentStoryGeneratorStore = defineStore('silent-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
   const story = ref<IStory>(_normalState())
+  const ionRouter = useIonRouter();
 
   function _normalState(): IStory {
     return {
@@ -102,8 +104,14 @@ Keep in mind that this only returns the content, not the description, title, or 
   }
 
   async function saveStory(): Promise<void> {
-    const response = await createStory(story.value)
-    console.log(response)
+    if (!story.value.id) {
+      const data = await createStory(story.value)
+      if (data?.id) {
+        ionRouter.navigate(`/story-generated/${data?.id}`, 'forward', 'replace');
+      }
+    } else {
+      await updateStory(story.value.id, story.value)
+    }
   }
 
   return {

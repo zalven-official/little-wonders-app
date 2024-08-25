@@ -98,7 +98,7 @@
 
         <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
           <SaveIcon class="w-5" />
-          Save Story
+          {{ !story.id ? 'Save Story' : 'Update Story' }}
         </button>
       </div>
 
@@ -148,7 +148,8 @@ const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = false
-  result.value = story.value
+  if (story.value.id)
+    result.value = story.value
 })
 
 onUnmounted(() => {

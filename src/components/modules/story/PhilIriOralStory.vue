@@ -89,7 +89,7 @@
 
       <button class="btn btn-primary my-2 w-full" type="button" @click="saveStory">
         <SaveIcon class="w-5" />
-        Save Story
+        {{ !story.id ? 'Save Story' : 'Update Story' }}
       </button>
 
     </form>

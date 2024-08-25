@@ -2,12 +2,14 @@ import { defineStore } from 'pinia'
 import { OpenAIClient } from '@/services';
 import { IStory, Level, TestType, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
-import { createStory } from '@/services/story.service';
+import { createStory, updateStory } from '@/services/story.service';
 
 import thumbnail from '@/assets/thumbnail.png'
+import { useIonRouter } from '@ionic/vue';
 
 export const useOralStoryGeneratorStore = defineStore('oral-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
+  const ionRouter = useIonRouter();
 
   const story = ref<IStory>(_normalState())
   function _normalState(): IStory {
@@ -151,7 +153,14 @@ Please provide an answer, or a different possible answer but connected to the co
   }
 
   async function saveStory(): Promise<void> {
-    createStory(story.value)
+    if (!story.value.id) {
+      const data = await createStory(story.value)
+      if (data?.id) {
+        ionRouter.navigate(`/story-generated/${data?.id}`, 'forward', 'replace');
+      }
+    } else {
+      await updateStory(story.value.id, story.value)
+    }
   }
 
   return {

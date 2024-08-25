@@ -28,6 +28,7 @@ export const createStory = async (newStory: IStory): Promise<IStory | undefined>
 
     return await response.json();
   } catch (error) {
+    alert(error);
     console.error('Failed to create story', error);
     return undefined;
   }
@@ -67,6 +68,7 @@ export const fetchStoryById = async (id: string): Promise<IStory | undefined> =>
 
     return await response.json();
   } catch (error) {
+    alert(error);
     console.error('Failed to fetch story', error);
   }
 };
@@ -99,40 +101,7 @@ export const deleteStory = async (id: string) => {
       throw new Error('Failed to delete story');
     }
   } catch (error) {
+    alert(error);
     console.error('Failed to delete story', error);
-  }
-};
-
-export const fetchFilteredStories = async (filters: {
-  gradeLevel?: string;
-  testType?: string;
-  readingMode?: string;
-  date?: 'Newest' | 'Oldest' | 'Date';
-  search?: string;
-}): Promise<IStory[] | undefined> => {
-  try {
-    const response = await fetch(`${serverUrl}/api/stories`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // Construct query params manually
-      body: new URLSearchParams({
-        gradeLevel: filters.gradeLevel ?? '',
-        testType: filters.testType ?? '',
-        readingMode: filters.readingMode ?? '',
-        date: filters.date ?? '',
-        search: filters.search ?? '',
-      }).toString(),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch filtered stories');
-    }
-
-    return await response.json();
-  } catch (err) {
-    console.error('Failed to fetch filtered stories', err);
-    return undefined;
   }
 };
