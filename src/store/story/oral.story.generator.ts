@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia'
 import { OpenAIClient } from '@/services';
-import { IStory, Level, TestType, ReadingMode } from '@/services/types';
+import { IStory, Level, TestType, ReadingMode, defaultPoster } from '@/services/types';
 import { ref } from 'vue';
 import { createStory, updateStory, destroyStory } from '@/services/story.service';
 
-import thumbnail from '@/assets/thumbnail.png'
 import { useIonRouter } from '@ionic/vue';
 
 export const useOralStoryGeneratorStore = defineStore('oral-story-generator', () => {
@@ -24,7 +23,7 @@ export const useOralStoryGeneratorStore = defineStore('oral-story-generator', ()
       content: '',
       story: '',
       questions: '',
-      poster: thumbnail,
+      poster: defaultPoster,
       readingMode: ReadingMode.ORAL_READING,
       prompt: '',
       literalQuestions: '',
@@ -144,8 +143,6 @@ Please provide an answer, or a different possible answer but connected to the co
     const prompt = posterGeneratorPrompt()
     const image = await openai.generateImage(prompt)
     const generatedPoster = `data:image/png;base64,${image[0].b64_json}`
-    console.log(image)
-
     if (generatedPoster) {
       story.value = { ...story.value, poster: generatedPoster }
     }

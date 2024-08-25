@@ -15,6 +15,7 @@
       </label>
 
 
+
       <label class="form-control w-full my-2">
         <div class="label">
           <span class="label-text">Test Type</span>
@@ -90,11 +91,10 @@ import { useThemeStore } from '@/store/ui/theme.store'
 import { toast } from 'vue3-toastify';
 import { SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useSilentStoryGeneratorStore } from '@/store/story/index'
-import { Level, TestType } from '@/services/types';
-import { onMounted } from 'vue';
+import { defaultPoster, Level, TestType } from '@/services/types';
+import { onMounted, onUnmounted } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
 import TipTapEditor from '@/components/global/TipTapEditor.vue';
-import thumbnail from '@/assets/thumbnail.png'
 
 const themeStore = useThemeStore()
 
@@ -119,6 +119,10 @@ onMounted(() => {
   story.value.isPhilIri = true
 })
 
+onUnmounted(() => {
+  story.value = silentStoryGenerator._normalState()
+})
+
 
 function handleFileChange(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -131,7 +135,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = thumbnail
+    story.value.poster = defaultPoster
   }
 }
 

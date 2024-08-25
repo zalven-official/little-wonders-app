@@ -120,23 +120,13 @@ import {
 } from 'lucide-vue-next';
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
-import Bold from '@tiptap/extension-bold'
-import Italic from '@tiptap/extension-italic'
-import Strike from '@tiptap/extension-strike'
+
 import Underline from '@tiptap/extension-underline'
-import Heading from '@tiptap/extension-heading'
-import BulletList from '@tiptap/extension-bullet-list'
-import OrderedList from '@tiptap/extension-ordered-list'
 import Table from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import Highlight from '@tiptap/extension-highlight'
-import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
-import HorizontalRule from '@tiptap/extension-horizontal-rule'
-import HardBreak from '@tiptap/extension-hard-break'
 
 
 import { watch, onMounted, ref } from 'vue'
@@ -172,26 +162,15 @@ const blurTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const editor = useEditor({
   extensions: [
-    StarterKit,
-    Bold,
-    Italic,
-    Strike,
-    Underline,
-    Heading,
-    BulletList,
-    OrderedList,
+    StarterKit, // Includes: Paragraph, Bold, Italic, Strike, Heading, BulletList, OrderedList, Document, Text, HorizontalRule, HardBreak
     Table.configure({
       resizable: true,
     }),
+    Underline,
     TableRow,
     TableCell,
     TableHeader,
     Highlight,
-    Document,
-    Paragraph,
-    Text,
-    HorizontalRule,
-    HardBreak,
   ],
   content: '',
   onFocus() {
@@ -220,6 +199,8 @@ watch(() => props.modelValue, (newValue) => {
   if (editor.value && newValue !== editor.value.getHTML() && newValue) {
     const htmlContent = convertMarkdownToHtml(newValue)
     editor.value.commands.setContent(htmlContent, false)
+  } else if (editor.value) {
+    editor.value.commands.setContent('', false)
   }
 })
 

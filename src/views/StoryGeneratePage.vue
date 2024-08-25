@@ -2,7 +2,7 @@
   <MainLayout :is-loading="isLoading">
 
     <HeaderCover />
-    <div class="flex items-center rounded-lg justify-center">
+    <div class="flex items-center rounded-lg justify-center" v-if="!storyId">
       <div class="join grid grid-cols-1 p-5">
         <button class="btn btn-outline w-64 my-2" @click="handleCategory(ReadingMode.ORAL_READING, false)"
           :class="{ 'btn-active': readingType === ReadingMode.ORAL_READING && isPhilIri === false }">
@@ -35,18 +35,40 @@
 
       </div>
     </div>
+    <div class="flex items-center rounded-lg justify-center mb-10" v-else>
+      <div class="btn btn-primary shadow" v-if="readingType === ReadingMode.ORAL_READING && isPhilIri === false">
+        <SparklesIcon class="w-5" />
+        <span class="text-xs"> Generate Oral Reading</span>
+        <Mic2Icon class="w-5" />
+      </div>
+      <div class="btn btn-primary shadow" v-if="readingType === ReadingMode.SILENT_READING && isPhilIri === false">
+        <SparklesIcon class="w-5" />
+        <span class="text-xs">Generate Silent Reading</span>
+        <GlassesIcon class="w-5" />
+      </div>
+      <div class="btn btn-primary shadow" v-if="readingType === ReadingMode.ORAL_READING && isPhilIri === true">
+        <BookAIcon class="w-5" />
+        <span class="text-xs">Phil Iri Oral Reading</span>
+        <Mic2Icon class="w-5" />
+      </div>
+      <div class="btn btn-primary shadow" v-if="readingType === ReadingMode.SILENT_READING && isPhilIri === true">
+        <BookAIcon class="w-5" />
+        <span class="text-xs">Phil Iri Silent Reading</span>
+        <GlassesIcon class="w-5" />
+      </div>
+    </div>
 
     <SilentStory @update:isLoading="handleIsLoadingUpdate" :is-loading="isLoading"
-      v-if="readingType === ReadingMode.SILENT_READING && isPhilIri === false" />
+      v-if="readingType === ReadingMode.SILENT_READING && isPhilIri === false && !isFetchingStory" />
 
     <OralStory @update:isLoading="handleIsLoadingUpdate" :is-loading="isLoading"
-      v-if="readingType === ReadingMode.ORAL_READING && isPhilIri === false" />
+      v-if="readingType === ReadingMode.ORAL_READING && isPhilIri === false && !isFetchingStory" />
 
     <PhilIriSilentStory @update:isLoading="handleIsLoadingUpdate" :is-loading="isLoading"
-      v-if="readingType === ReadingMode.SILENT_READING && isPhilIri === true" />
+      v-if="readingType === ReadingMode.SILENT_READING && isPhilIri === true && !isFetchingStory" />
 
     <PhilIriOralStory @update:isLoading="handleIsLoadingUpdate" :is-loading="isLoading"
-      v-if="readingType === ReadingMode.ORAL_READING && isPhilIri === true" />
+      v-if="readingType === ReadingMode.ORAL_READING && isPhilIri === true && !isFetchingStory" />
   </MainLayout>
 
 </template>
@@ -68,6 +90,7 @@ import { fetchStoryById } from '@/services/index'
 import { useOralStoryGeneratorStore } from '@/store/story';
 
 const isLoading = ref(false)
+const isFetchingStory = ref(true)
 const readingType = ref<ReadingMode>(ReadingMode.ORAL_READING)
 const isPhilIri = ref<boolean>(false)
 const route = useRoute();
@@ -76,7 +99,7 @@ const storyId = ref(route.params.id as string);
 
 const silentStoryGenerator = useSilentStoryGeneratorStore()
 const oralStoryGenerator = useOralStoryGeneratorStore()
-onMounted(() => {
+onMounted(async () => {
   fetch()
 })
 
@@ -96,11 +119,16 @@ function resetSilent() {
 }
 
 async function fetch() {
-  if (!storyId.value) return
+  if (!storyId.value) {
+    isFetchingStory.value = false
+    return
+  }
   isLoading.value = true
+  isFetchingStory.value = true
   try {
     const data = await fetchStoryById(storyId.value)
     const responseReadingType = data?.readingMode ?? ReadingMode.ORAL_READING
+
     const responseIsPhilIri = data?.isPhilIri ?? false
     handleCategory(responseReadingType, responseIsPhilIri)
 
@@ -116,6 +144,7 @@ async function fetch() {
     }
   } finally {
     isLoading.value = false
+    isFetchingStory.value = false
   }
 
 }

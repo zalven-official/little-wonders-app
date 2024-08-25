@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
 
-import { Level, TestType, IStory, ReadingMode } from '@/services/types';
+import { Level, TestType, IStory, ReadingMode, defaultPoster } from '@/services/types';
 import { ref } from 'vue';
 
 import { OpenAIClient } from '@/services';
 import { createStory, updateStory, destroyStory } from '@/services/story.service';
 import { useIonRouter } from '@ionic/vue';
-
-import thumbnail from '@/assets/thumbnail.png'
 
 export const useSilentStoryGeneratorStore = defineStore('silent-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
@@ -26,7 +24,7 @@ export const useSilentStoryGeneratorStore = defineStore('silent-story-generator'
       content: '',
       story: '',
       questions: '',
-      poster: thumbnail,
+      poster: defaultPoster,
       readingMode: ReadingMode.SILENT_READING
     }
   }
@@ -95,8 +93,6 @@ Keep in mind that this only returns the content, not the description, title, or 
     const prompt = posterGeneratorPrompt()
     const image = await openai.generateImage(prompt)
     const generatedPoster = `data:image/png;base64,${image[0].b64_json}`
-    console.log(image)
-
     if (generatedPoster) {
       story.value = { ...story.value, poster: generatedPoster }
     }

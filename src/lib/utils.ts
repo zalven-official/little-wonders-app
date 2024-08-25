@@ -239,7 +239,8 @@ export async function exportFile(value: HTMLElement, name: string): Promise<void
  * const text = "   Lots of    spaces and special $$$ characters!!!  ";
  * console.log(countWords(text)); // Output: 6
  */
-export function countWords(input: string): number {
+export function countWords(input?: string): number {
+  if (!input) return 0
   const cleanedInput = input
     .replace(/[^a-zA-Z0-9\s]/g, '')
     .trim()

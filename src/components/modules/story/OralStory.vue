@@ -14,6 +14,7 @@
         </select>
       </label>
 
+
       <label class="form-control w-full my-2">
         <div class="label">
           <span class="label-text">Test Type</span>
@@ -82,6 +83,8 @@
             </div>
           </div>
         </div>
+        Story {{ countWords(story.story) }}
+        Literal {{ countWords(story.literalQuestions) }}
 
         <TipTapEditor v-model="story.story" :is-bionic="isBionic"></TipTapEditor>
 
@@ -144,12 +147,11 @@ import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useThemeStore } from '@/store/ui/theme.store'
 import { useOralStoryGeneratorStore } from '@/store/story/index'
 import { storeToRefs } from 'pinia';
-import { IStory, Level, TestType } from '@/services/types';
+import { defaultPoster, IStory, Level, TestType } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { onMounted, onUnmounted } from 'vue';
 import { ref, computed } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
-import thumbnail from '@/assets/thumbnail.png'
 const themeStore = useThemeStore()
 
 defineProps({
@@ -186,12 +188,15 @@ onMounted(() => {
 
 onUnmounted(() => {
   result.value = oralStoryGenerator._normalState()
+  story.value = oralStoryGenerator._normalState()
 })
 
 async function generateStory(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateOralStory()
+    const value = await oralStoryGenerator.generateOralStory()
+    story.value = value
+    result.value = value
     toast.success("Successfully generating the story")
   } catch (e) {
     toast.error(`Something Wrong Generating the Story: ${e}`)
@@ -203,7 +208,9 @@ async function generateStory(): Promise<void> {
 async function generateLiteralQuestions(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateLiteralQuestions()
+    const value = await oralStoryGenerator.generateLiteralQuestions()
+    story.value = value
+    result.value = value
     toast.success("Successfully generating the literal questionnaires")
   } catch (e) {
     toast.error("Something Wrong Generating the literal questionnaires")
@@ -215,7 +222,9 @@ async function generateLiteralQuestions(): Promise<void> {
 async function generateInterpretiveQuestions(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateInterpretiveQuestions()
+    const value = await oralStoryGenerator.generateInterpretiveQuestions()
+    story.value = value
+    result.value = value
     toast.success("Successfully generating the interpretive questionnaires")
   } catch (e) {
     toast.error("Something Wrong Generating the interpretive questionnaires")
@@ -227,7 +236,9 @@ async function generateInterpretiveQuestions(): Promise<void> {
 async function generateAppliedQuestions(): Promise<void> {
   emit('update:isLoading', true)
   try {
-    result.value = await oralStoryGenerator.generateAppliedQuestions()
+    const value = await oralStoryGenerator.generateAppliedQuestions()
+    story.value = value
+    result.value = value
     toast.success("Successfully generating the applied questionnaires")
   } catch (e) {
     toast.error("Something Wrong Generating the applied questionnaires")
@@ -247,7 +258,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = thumbnail
+    story.value.poster = defaultPoster
   }
 }
 

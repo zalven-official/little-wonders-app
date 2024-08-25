@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import TipTapEditor from '@/components/global/TipTapEditor.vue';
 import { useThemeStore } from '@/store/ui/theme.store'
-import { Level, TestType, IStory } from '@/services/types';
+import { Level, TestType, IStory, defaultPoster } from '@/services/types';
 import { toast } from 'vue3-toastify';
 import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generator';
@@ -122,7 +122,6 @@ import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ref, computed, onUnmounted } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
-import thumbnail from '@/assets/thumbnail.png'
 
 defineProps({
   isLoading: {
@@ -159,6 +158,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   result.value = silentStoryGenerator._normalState()
+  story.value = silentStoryGenerator._normalState()
 })
 
 async function generateStory(): Promise<void> {
@@ -196,7 +196,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = thumbnail
+    story.value.poster = defaultPoster
   }
 }
 
@@ -234,7 +234,6 @@ async function deleteStory(): Promise<void> {
     await silentStoryGenerator.deleteStory()
     toast.success("Successfully deleting the story")
   } catch (e) {
-    console.log(e)
     toast.error("Something Wrong deleting the Story")
   } finally {
     emit('update:isLoading', false)

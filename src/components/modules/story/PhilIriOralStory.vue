@@ -105,11 +105,10 @@ import { storeToRefs } from 'pinia';
 import { useThemeStore } from '@/store/ui/theme.store'
 import { toast } from 'vue3-toastify';
 import { SaveIcon, DownloadIcon } from 'lucide-vue-next';
-import { Level, TestType } from '@/services/types';
+import { defaultPoster, Level, TestType } from '@/services/types';
 import { useOralStoryGeneratorStore } from '@/store/story/index'
 import { exportFile, readableDateTime, countWords } from '@/lib';
-import { onMounted, computed } from 'vue';
-import thumbnail from '@/assets/thumbnail.png'
+import { onMounted, onUnmounted, computed } from 'vue';
 
 
 const themeStore = useThemeStore()
@@ -130,7 +129,10 @@ const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = true
+})
 
+onUnmounted(() => {
+  story.value = oralStoryGenerator._normalState()
 })
 
 async function exportStory(): Promise<void> {
@@ -170,7 +172,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = thumbnail
+    story.value.poster = defaultPoster
   }
 }
 

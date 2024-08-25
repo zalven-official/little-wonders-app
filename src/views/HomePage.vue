@@ -35,7 +35,6 @@
             <option :value="undefined">Mode</option>
             <option :value="ReadingMode.SILENT_READING">Silent Reading</option>
             <option :value="ReadingMode.ORAL_READING">Oral Reading</option>
-            {{ stories.filters.readingMode }}
           </select>
           <select v-model="stories.filters.sort" class="select join-item w-full select-sm rounded-br-none"
             @change="search">
@@ -67,10 +66,10 @@
 
         </div>
         <div class="w-full flex justify-end absolute bottom-0 rounded-b-lg px-2">
-          <div class="capitalize badge badge-primary m-1 badge-xs p-2 text-xs">{{ value.gradeLevel }}</div>
-          <div class="capitalize badge badge-accent m-1 badge-xs p-2 text-xs">{{ value.readingMode }}</div>
-          <div class="capitalize badge badge-secondary m-1 badge-xs p-2 text-xs">{{ value.testType }}</div>
-          <div class="capitalize badge badge-info m-1 badge-xs p-2 text-xs">
+          <div class="capitalize badge badge-primary m-1 badge-xs p-2 text-[5px]">{{ value.gradeLevel }}</div>
+          <div class="capitalize badge badge-accent m-1 badge-xs p-2 text-[5px]">{{ value.readingMode }}</div>
+          <div class="capitalize badge badge-secondary m-1 badge-xs p-2 text-[5px]">{{ value.testType }}</div>
+          <div class="capitalize badge badge-info m-1 badge-xs p-2 text-[5px]">
             {{ value.isPhilIri ? 'Original' : 'AI Generated' }}
           </div>
         </div>
