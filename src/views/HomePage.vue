@@ -3,11 +3,10 @@
     <button class="btn btn-primary m-5 shadow btn-sm" @click="navigateToStoryGenerator">
       <PlusIcon class="w-5" /> Add Story
     </button>
-    --{{ serverUrl }}--
     <div class="flex flex-col p-5 items-center justify-center">
       <div class="mb-10">
         <div class="bg-base-100 join w-full mb-2">
-          <select v-model="stories.filters.isPhilIri" class="select join-item w-full select-sm">
+          <select v-model="stories.filters.isPhilIri" class="select join-item w-full select-sm" @change="search">
             <option :value="undefined">Content</option>
             <option :value="true">Phil Iri Stories</option>
             <option :value="false">AI Generated Stories</option>
@@ -18,24 +17,28 @@
         </div>
 
         <div class="join w-full ">
-          <select v-model="stories.filters.gradeLevel" class="select join-item w-full select-sm rounded-b-none">
+          <select v-model="stories.filters.gradeLevel" class="select join-item w-full select-sm rounded-b-none"
+            @change="search">
             <option :value="undefined">Grade</option>
             <option :value="Level.GRADE_4">Grade 4</option>
             <option :value="Level.GRADE_5">Grade 5</option>
             <option :value="Level.GRADE_6">Grade 6</option>
           </select>
-          <select v-model="stories.filters.testType" class="select join-item  w-full select-sm rounded-b-none">
+          <select v-model="stories.filters.testType" class="select join-item  w-full select-sm rounded-b-none"
+            @change="search">
             <option :value="undefined">Type</option>
             <option :value="TestType.POSTTEST">Post Test</option>
             <option :value="TestType.PRETEST">Pre Test</option>
           </select>
-          <select v-model="stories.filters.readingMode" class="select join-item  w-full select-sm rounded-b-none">
+          <select v-model="stories.filters.readingMode" class="select join-item  w-full select-sm rounded-b-none"
+            @change="search">
             <option :value="undefined">Mode</option>
             <option :value="ReadingMode.SILENT_READING">Silent Reading</option>
             <option :value="ReadingMode.ORAL_READING">Oral Reading</option>
             {{ stories.filters.readingMode }}
           </select>
-          <select v-model="stories.filters.sort" class="select join-item w-full select-sm rounded-br-none">
+          <select v-model="stories.filters.sort" class="select join-item w-full select-sm rounded-br-none"
+            @change="search">
             <option :value="undefined">Date</option>
             <option value="desc">Newest</option>
             <option value="asc">Oldest</option>
@@ -51,7 +54,6 @@
         </div>
       </div>
 
-      {{ storyStore.stories.stories }}
       <div v-for="(value, index) in storyStore.stories.stories" :key="index"
         :class="`flex flex-row card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 h-48 min-h-48`">
         <img :src="value.poster" class="w-40 h-40 rounded-md p-3 shadow-sm">
@@ -96,8 +98,6 @@ const themeStore = useThemeStore()
 
 const { stories } = storeToRefs(storyStore)
 
-
-const serverUrl = ref(import.meta.env.VITE_SERVER_URL);
 const isLoading = ref(false)
 const {
   backgroundOpacity,
