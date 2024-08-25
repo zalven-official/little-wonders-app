@@ -91,6 +91,7 @@ import { Level, TestType } from '@/services/types';
 import { onMounted } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
 import TipTapEditor from '@/components/global/TipTapEditor.vue';
+import thumbnail from '@/assets/thumbnail.png'
 
 const themeStore = useThemeStore()
 
@@ -127,7 +128,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = ''
+    story.value.poster = thumbnail
   }
 }
 

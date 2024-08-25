@@ -106,6 +106,7 @@ import { Level, TestType } from '@/services/types';
 import { useOralStoryGeneratorStore } from '@/store/story/index'
 import { exportFile, readableDateTime, countWords } from '@/lib';
 import { onMounted, computed } from 'vue';
+import thumbnail from '@/assets/thumbnail.png'
 
 
 const themeStore = useThemeStore()
@@ -126,6 +127,7 @@ const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = true
+
 })
 
 async function exportStory(): Promise<void> {
@@ -165,7 +167,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = ''
+    story.value.poster = thumbnail
   }
 }
 

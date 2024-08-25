@@ -16,9 +16,10 @@ const routes: Array<RouteRecordRaw> = [
     component: HomePage
   },
   {
-    path: '/story-generated',
+    path: '/story-generated/:id',
     name: 'story-generated',
-    component: StoryGeneratePage
+    component: StoryGeneratePage,
+    props: true
   },
   {
     path: '/theme',

@@ -141,9 +141,10 @@ import { useOralStoryGeneratorStore } from '@/store/story/index'
 import { storeToRefs } from 'pinia';
 import { IStory, Level, TestType } from '@/services/types';
 import { toast } from 'vue3-toastify';
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { ref, computed } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
+import thumbnail from '@/assets/thumbnail.png'
 const themeStore = useThemeStore()
 
 defineProps({
@@ -174,8 +175,12 @@ const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = false
+  result.value = story.value
 })
 
+onUnmounted(() => {
+  result.value = oralStoryGenerator._normalState()
+})
 
 async function generateStory(): Promise<void> {
   emit('update:isLoading', true)
@@ -236,7 +241,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = ''
+    story.value.poster = thumbnail
   }
 }
 

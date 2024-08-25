@@ -54,9 +54,9 @@
         </div>
       </div>
 
-      <div v-for="(value, index) in storyStore.stories.stories" :key="index"
+      <div v-for="(value, index) in storyStore.stories.stories" :key="index" @click="handleClick(value.id)"
         :class="`flex flex-row card w-full bg-base-100 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value} shadow-xl my-2 h-48 min-h-48`">
-        <img :src="value.poster" class="w-40 h-40 rounded-md p-3 shadow-sm">
+        <img :src="value.poster" class="w-40 h-40 rounded-md p-3 shadow-md">
         <div class="p-3">
           <p class="text-sm font-semibold capitalize">{{ value.title }}</p>
           <p class="text-xs mt-2">{{ value.description }}</p>
@@ -67,10 +67,10 @@
 
         </div>
         <div class="w-full flex justify-end absolute bottom-0 rounded-b-lg px-2">
-          <div class="capitalize badge badge-primary m-1 badge-xs p-2">{{ value.gradeLevel }}</div>
-          <div class="capitalize badge badge-accent m-1 badge-xs p-2">{{ value.readingMode }}</div>
-          <div class="capitalize badge badge-secondary m-1 badge-xs p-2">{{ value.testType }}</div>
-          <div class="capitalize badge badge-info m-1 badge-xs p-2">
+          <div class="capitalize badge badge-primary m-1 badge-xs p-2 text-xs">{{ value.gradeLevel }}</div>
+          <div class="capitalize badge badge-accent m-1 badge-xs p-2 text-xs">{{ value.readingMode }}</div>
+          <div class="capitalize badge badge-secondary m-1 badge-xs p-2 text-xs">{{ value.testType }}</div>
+          <div class="capitalize badge badge-info m-1 badge-xs p-2 text-xs">
             {{ value.isPhilIri ? 'Original' : 'AI Generated' }}
           </div>
         </div>
@@ -92,6 +92,7 @@ import { useIonRouter } from '@ionic/vue';
 import { ReadingMode, TestType, Level } from '@/services/types'
 import { ref } from 'vue'
 
+
 const ionRouter = useIonRouter();
 const storyStore = useStoryStore()
 const themeStore = useThemeStore()
@@ -108,6 +109,11 @@ onMounted(() => {
   search()
 })
 
+function handleClick(id?: string) {
+  if (id) {
+    ionRouter.navigate(`/story-generated/${id}`, 'forward', 'replace');
+  }
+}
 
 async function search() {
   isLoading.value = true

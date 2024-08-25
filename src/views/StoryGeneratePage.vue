@@ -58,15 +58,67 @@ import SilentStory from '@/components/modules/story/SilentStory.vue'
 import OralStory from '@/components/modules/story/OralStory.vue'
 import PhilIriOralStory from '@/components/modules/story/PhilIriOralStory.vue'
 import PhilIriSilentStory from '@/components/modules/story/PhilIriSilentStory.vue'
-
+import { storeToRefs } from 'pinia';
 import { ReadingMode } from '@/services/types'
 import { SparklesIcon, BookAIcon, GlassesIcon, Mic2Icon } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generator';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { fetchStoryById } from '@/services/index'
+import { useOralStoryGeneratorStore } from '@/store/story';
 
 const isLoading = ref(false)
 const readingType = ref<ReadingMode>(ReadingMode.ORAL_READING)
 const isPhilIri = ref<boolean>(false)
+const route = useRoute();
+const storyId = ref(route.params.id as string);
 
+
+const silentStoryGenerator = useSilentStoryGeneratorStore()
+const oralStoryGenerator = useOralStoryGeneratorStore()
+onMounted(() => {
+  fetch()
+})
+
+onUnmounted(() => {
+  resetOral()
+  resetSilent()
+})
+
+function resetOral() {
+  const { story } = storeToRefs(oralStoryGenerator)
+  story.value = oralStoryGenerator._normalState()
+}
+
+function resetSilent() {
+  const { story } = storeToRefs(silentStoryGenerator)
+  story.value = silentStoryGenerator._normalState()
+}
+
+async function fetch() {
+  if (!storyId.value) return
+  isLoading.value = true
+  try {
+    const data = await fetchStoryById(storyId.value)
+    const responseReadingType = data?.readingMode ?? ReadingMode.ORAL_READING
+    const responseIsPhilIri = data?.isPhilIri ?? false
+    handleCategory(responseReadingType, responseIsPhilIri)
+
+    if (responseReadingType === ReadingMode.ORAL_READING && data) {
+
+      const { story } = storeToRefs(oralStoryGenerator)
+      story.value = data
+    }
+    if (responseReadingType === ReadingMode.SILENT_READING && data) {
+
+      const { story } = storeToRefs(silentStoryGenerator)
+      story.value = data
+    }
+  } finally {
+    isLoading.value = false
+  }
+
+}
 const handleIsLoadingUpdate = (value: boolean) => {
   isLoading.value = value;
 }

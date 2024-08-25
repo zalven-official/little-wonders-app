@@ -3,5 +3,9 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">www.cisgalicia.org</domain>
+        <domain includeSubdomains="true">cdn.discordapp.com</domain>
+        <domain includeSubdomains="true">images.discordapp.com</domain>
+        <domain includeSubdomains="true">*.*</domain>
     </domain-config>
 </network-security-config>

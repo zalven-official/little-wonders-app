@@ -4,27 +4,32 @@ import { IStory, Level, TestType, ReadingMode } from '@/services/types';
 import { ref } from 'vue';
 import { createStory } from '@/services/story.service';
 
+import thumbnail from '@/assets/thumbnail.png'
+
 export const useOralStoryGeneratorStore = defineStore('oral-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
 
-  const story = ref<IStory>({
-    gradeLevel: Level.GRADE_4,
-    testType: TestType.POSTTEST,
-    title: '',
-    description: '',
-    isPhilIri: false,
+  const story = ref<IStory>(_normalState())
+  function _normalState(): IStory {
+    return {
+      gradeLevel: Level.GRADE_4,
+      testType: TestType.POSTTEST,
+      title: '',
+      description: '',
+      isPhilIri: false,
 
-    published: new Date(),
-    content: '',
-    story: '',
-    questions: '',
-    poster: 'https://cdn.discordapp.com/attachments/1217818054742900787/1276767207061327882/preschool_learning_center_1.png?ex=66cab99f&is=66c9681f&hm=4fd7de949a88560265772928317328e1c2b042eef8d1ec3a27addd8f2f1011f0&',
-    readingMode: ReadingMode.ORAL_READING,
-    prompt: '',
-    literalQuestions: '',
-    interpretiveQuestions: '',
-    appliedQuestions: '',
-  })
+      published: new Date(),
+      content: '',
+      story: '',
+      questions: '',
+      poster: thumbnail,
+      readingMode: ReadingMode.ORAL_READING,
+      prompt: '',
+      literalQuestions: '',
+      interpretiveQuestions: '',
+      appliedQuestions: '',
+    }
+  }
 
   function content() {
     return `
@@ -151,6 +156,7 @@ Please provide an answer, or a different possible answer but connected to the co
 
   return {
     story,
+    _normalState,
     generateOralStory,
     generateLiteralQuestions,
     generateInterpretiveQuestions,

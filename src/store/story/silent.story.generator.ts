@@ -6,22 +6,28 @@ import { ref } from 'vue';
 import { OpenAIClient } from '@/services';
 import { createStory } from '@/services/story.service';
 
+import thumbnail from '@/assets/thumbnail.png'
+
 export const useSilentStoryGeneratorStore = defineStore('silent-story-generator', () => {
   const openai = OpenAIClient.getInstance(import.meta.env.VITE_OPEN_AI_KEY)
-  const story = ref<IStory>({
-    gradeLevel: Level.GRADE_4,
-    testType: TestType.POSTTEST,
-    title: '',
-    description: '',
-    isPhilIri: false,
+  const story = ref<IStory>(_normalState())
 
-    published: new Date(),
-    content: '',
-    story: '',
-    questions: '',
-    poster: 'https://cdn.discordapp.com/attachments/1217818054742900787/1276767207061327882/preschool_learning_center_1.png?ex=66cab99f&is=66c9681f&hm=4fd7de949a88560265772928317328e1c2b042eef8d1ec3a27addd8f2f1011f0&',
-    readingMode: ReadingMode.SILENT_READING
-  })
+  function _normalState(): IStory {
+    return {
+      gradeLevel: Level.GRADE_4,
+      testType: TestType.POSTTEST,
+      title: '',
+      description: '',
+      isPhilIri: false,
+
+      published: new Date(),
+      content: '',
+      story: '',
+      questions: '',
+      poster: thumbnail,
+      readingMode: ReadingMode.SILENT_READING
+    }
+  }
 
   function content() {
     return `
@@ -102,6 +108,7 @@ Keep in mind that this only returns the content, not the description, title, or 
 
   return {
     story,
+    _normalState,
     generateSilentStory,
     generateSilentQuestionnaire,
     generatePoster,

@@ -115,8 +115,9 @@ import { SparklesIcon, SaveIcon, DownloadIcon } from 'lucide-vue-next';
 import { useSilentStoryGeneratorStore } from '@/store/story/silent.story.generator';
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { exportFile, readableDateTime, countWords } from '@/lib';
+import thumbnail from '@/assets/thumbnail.png'
 
 defineProps({
   isLoading: {
@@ -147,6 +148,11 @@ const numberOfWords = computed(() => countWords(story.value.story))
 
 onMounted(() => {
   story.value.isPhilIri = false
+  result.value = story.value
+})
+
+onUnmounted(() => {
+  result.value = silentStoryGenerator._normalState()
 })
 
 async function generateStory(): Promise<void> {
@@ -184,7 +190,7 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(file);
   } else {
     alert('Please select an image file.');
-    story.value.poster = ''
+    story.value.poster = thumbnail
   }
 }
 

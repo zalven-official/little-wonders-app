@@ -9,6 +9,15 @@ const config: CapacitorConfig = {
       enabled: true,
     },
   },
+  server: {
+    allowNavigation: [
+      'little-wonders-server.vercel.app',
+      '*.little-wonders-server.vercel.app',
+      'localhost:8100/*',
+      "cdn.discordapp.com",
+      "*.cdn.discordapp.com",
+    ]
+  }
 };
 
 export default config;
