@@ -3,7 +3,7 @@ sudo ionic capacitor run android
 
 ### Buld project
 ```
-nvm use 21.1.0
+nvm use 22.1.0
 ./gradlew clean
 sudo ionic build
 sudo npx cap sync

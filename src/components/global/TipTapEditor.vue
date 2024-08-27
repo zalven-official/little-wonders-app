@@ -199,6 +199,8 @@ watch(() => props.modelValue, (newValue) => {
   if (editor.value && newValue !== editor.value.getHTML() && newValue) {
     const htmlContent = convertMarkdownToHtml(newValue)
     editor.value.commands.setContent(htmlContent, false)
+  } else if (editor.value && newValue) {
+    editor.value.commands.setContent(newValue, false)
   } else if (editor.value) {
     editor.value.commands.setContent('', false)
   }
