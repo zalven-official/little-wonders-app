@@ -30,7 +30,7 @@ import coverTextImage from '@/assets/cover-text.png'
 import { useIonRouter } from '@ionic/vue';
 import { useRoute } from 'vue-router';
 import { useDrawerStore } from '@/store/ui/drawer.store'
-import { Paintbrush2Icon, HomeIcon, PlusIcon } from 'lucide-vue-next';
+import { Paintbrush2Icon, HomeIcon, PlusIcon, BadgeInfoIcon } from 'lucide-vue-next';
 import { type Component } from 'vue';
 
 const drawerStore = useDrawerStore()
@@ -64,6 +64,13 @@ const drawerMenuItems: DraweMenuItem[] = [
     icon: Paintbrush2Icon,
     route: '/theme',
     name: 'theme'
+  },
+
+  {
+    title: 'About',
+    icon: BadgeInfoIcon,
+    route: '/about',
+    name: 'about'
   },
 ]
 

@@ -1,7 +1,7 @@
 <template>
   <MainLayout :is-loading="isLoading">
 
-    <HeaderCover v-if="!storyId" />
+
     <div class="flex items-center rounded-lg justify-center" v-if="!storyId">
       <div class="join grid grid-cols-1 p-5">
         <button class="btn btn-outline w-64 my-2" @click="handleCategory(ReadingMode.ORAL_READING, false)"
@@ -79,7 +79,6 @@
 
 <script setup lang="ts">
 import MainLayout from '@/components/layouts/MainLayout.vue';
-import HeaderCover from '@/components/modules/story/HeaderCover.vue'
 import SilentStory from '@/components/modules/story/SilentStory.vue'
 import OralStory from '@/components/modules/story/OralStory.vue'
 import PhilIriOralStory from '@/components/modules/story/PhilIriOralStory.vue'

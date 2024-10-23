@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import HomePage from '@/views/HomePage.vue'
 import ThemePage from '@/views/ThemePage.vue'
+import AboutPage from '@/views/AboutPage.vue'
 import StoryGeneratePage from '@/views/StoryGeneratePage.vue';
 
 
@@ -25,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/theme',
     name: 'theme',
     component: ThemePage
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: AboutPage
   }
 ];
 const router = createRouter({
