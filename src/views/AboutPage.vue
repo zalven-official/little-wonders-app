@@ -4,7 +4,7 @@
 
 
     <div :class="`w-full bg-base-100 mt-10 p-8 bg-opacity-${backgroundOpacity} backdrop-blur-${backgroundBlur.value}`">
-      <h1 class="text-4xl font-bold text-primary text-center">AI-Generated Phil-IRI Stories Using LLM</h1>
+      <h1 class="text-4xl font-bold text-primary text-center">Little Wonder</h1>
       <p class="font-bold text-lg text-center w-full flex items-center justify-center">
         <SparklesIcon class="w-5 mr-2 " /> Generate Phil Iri Story
       </p>
@@ -13,9 +13,7 @@
         supports this by generating personalized stories and questions for different reading levels, making learning fun
         and effective.
       </p>
-      <p class="text-xs text-gray-600  text-center mt-2">
-        Leveraging Large Language Models (LLMs) to generate and store customized Phil-IRI reading materials.
-      </p>
+
       <p class="mt-5 text-xs text-center w-full opacity-60">
         BEED 3B - 2024 - 2025
       </p>
@@ -198,19 +196,19 @@ import { useThemeStore } from '@/store/ui/theme.store'
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
-interface Profiles {
-  name: string
-  email: string
-  image: string
-}
+// interface Profiles {
+//   name: string
+//   email: string
+//   image: string
+// }
+// const profiles = ref<Profiles[]>([
+//   {
+//     name: "Alyssa Pineda",
+//     email: "alyssapineda@gmail.com",
+//     image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
+//   }
+// ])
 const isLoading = ref(false)
-const profiles = ref<Profiles[]>([
-  {
-    name: "Alyssa Pineda",
-    email: "alyssapineda@gmail.com",
-    image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-  }
-])
 const themeStore = useThemeStore()
 const {
   backgroundOpacity,

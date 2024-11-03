@@ -18,7 +18,19 @@
             <span class="text-md">{{ item.title }}</span>
           </a>
         </li>
+
+
+        <div class="flex flex-col items-center justify-center absolute bottom-10 w-full text-xs">
+          <!-- Footnote Section -->
+          <div class="p-4 text-center text-opacity-75">
+            <p>Created by <span href="#" class="text-primary">Zalven</span></p>
+            <p>Partnered by <span href="#" class="text-primary">BEED 4B Norzagaray College</span></p>
+          </div>
+        </div>
+
+
       </ul>
+
     </div>
   </div>
 </template>

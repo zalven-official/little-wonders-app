@@ -62,6 +62,16 @@ export const useThemeStore = defineStore('theme', () => {
 
   const themes = ref<Theme[]>([
     {
+      label: 'Morning Winter',
+      value: 'winter',
+      image: WinterCover,
+      background: WinterBackground,
+      backgrounOpacity: 1,
+      backgroundBlur: 0,
+      imageOpacity: 1,
+      imageBlur: 0,
+    },
+    {
       label: 'Emerald Landscape',
       value: 'emerald',
       image: EmeraldCover,
@@ -141,16 +151,7 @@ export const useThemeStore = defineStore('theme', () => {
       imageOpacity: 1,
       imageBlur: 0,
     },
-    {
-      label: 'Morning Winter',
-      value: 'winter',
-      image: WinterCover,
-      background: WinterBackground,
-      backgrounOpacity: 1,
-      backgroundBlur: 0,
-      imageOpacity: 1,
-      imageBlur: 0,
-    },
+
     {
       label: 'Valentines Day',
       value: 'valentine',
