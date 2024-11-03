@@ -25,8 +25,10 @@
           <div class="p-4 text-center text-opacity-75">
             <p>Created by <span href="#" class="text-primary">Zalven</span></p>
             <p>Partnered by <span href="#" class="text-primary">BEED 4B Norzagaray College</span></p>
+            <p>&copy; 2024 All rights reserved.</p>
           </div>
         </div>
+
 
 
       </ul>

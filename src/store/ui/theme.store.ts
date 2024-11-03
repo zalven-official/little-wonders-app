@@ -31,6 +31,9 @@ import ValentineCover from '@/assets/valentine-cv.png'
 import WinterBackground from '@/assets/winter-bg.png'
 import WinterCover from '@/assets/winter-cv.png'
 
+import posterImage from '@/assets/littlewonder/poster.png'
+
+
 interface Theme {
   label: string
   value: string
@@ -61,6 +64,16 @@ export const useThemeStore = defineStore('theme', () => {
 
 
   const themes = ref<Theme[]>([
+    {
+      label: 'Little Wonders',
+      value: 'wonder',
+      image: posterImage,
+      background: posterImage,
+      backgrounOpacity: 1,
+      backgroundBlur: 0,
+      imageOpacity: 1,
+      imageBlur: 0,
+    },
     {
       label: 'Morning Winter',
       value: 'winter',
